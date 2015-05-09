@@ -16,6 +16,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let menuNavigationController = storyboard.instantiateViewControllerWithIdentifier("MenuNavigationController") as! UINavigationController
+        let centerNavigationController = storyboard.instantiateViewControllerWithIdentifier("StreamNavigationController") as! UINavigationController
+        
+        let drawerController = MMDrawerController(centerViewController: centerNavigationController, leftDrawerViewController: menuNavigationController)
+        drawerController?.showsShadow = false
+        drawerController?.maximumLeftDrawerWidth = 230
+        
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window!.rootViewController = drawerController
+        self.window!.makeKeyAndVisible()
+        
+        UIApplication.sharedApplication().statusBarStyle = .LightContent
+        
+        TwitchRequestManager.initializeManager()
+        
         return true
     }
 
