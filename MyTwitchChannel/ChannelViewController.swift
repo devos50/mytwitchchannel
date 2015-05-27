@@ -191,6 +191,15 @@ class ChannelViewController: UITableViewController
                 var responseJSON = JSON(data!)
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
+    {
+        if segue.identifier == "FollowersSegue"
+        {
+            let vc = segue.destinationViewController as! FollowersViewController
+            vc.channelName = self.channelName
+        }
+    }
 }
 
 extension ChannelViewController: UIActionSheetDelegate

@@ -22,6 +22,7 @@
 		10DDC6CE1AFE98C4009CBCB9 /* TwitchRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DDC6CD1AFE98C4009CBCB9 /* TwitchRequestManager.swift */; };
 		10DDC6D11AFE9E26009CBCB9 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DDC6D01AFE9E26009CBCB9 /* SwiftyJSON.swift */; };
 		10DDC6D31AFE9E42009CBCB9 /* Alamofire-SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DDC6D21AFE9E42009CBCB9 /* Alamofire-SwiftyJSON.swift */; };
+		10DFD3A01B1615FD00A6080C /* FollowersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DFD39F1B1615FD00A6080C /* FollowersViewController.swift */; };
 		63E812110D6E49DA5DDE75F9 /* libPods-MyTwitchChannel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EE5F6FB99943FBD8327E8FF9 /* libPods-MyTwitchChannel.a */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		10DDC6CD1AFE98C4009CBCB9 /* TwitchRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitchRequestManager.swift; sourceTree = "<group>"; };
 		10DDC6D01AFE9E26009CBCB9 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		10DDC6D21AFE9E42009CBCB9 /* Alamofire-SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Alamofire-SwiftyJSON.swift"; sourceTree = "<group>"; };
+		10DFD39F1B1615FD00A6080C /* FollowersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowersViewController.swift; sourceTree = "<group>"; };
 		6E8D97F95E773AF7F244125F /* Pods-MyTwitchChannel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyTwitchChannel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyTwitchChannel/Pods-MyTwitchChannel.debug.xcconfig"; sourceTree = "<group>"; };
 		D89B4EAA2741839097B511ED /* Pods-MyTwitchChannel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyTwitchChannel.release.xcconfig"; path = "Pods/Target Support Files/Pods-MyTwitchChannel/Pods-MyTwitchChannel.release.xcconfig"; sourceTree = "<group>"; };
 		EE5F6FB99943FBD8327E8FF9 /* libPods-MyTwitchChannel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyTwitchChannel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -110,6 +112,7 @@
 				10853A921AFE6D4D000F1AB3 /* SettingsViewController.swift */,
 				10853A941AFE6D6A000F1AB3 /* MenuViewController.swift */,
 				10353D8A1B15FB89008A1A89 /* ChannelViewController.swift */,
+				10DFD39F1B1615FD00A6080C /* FollowersViewController.swift */,
 				100DA5C31AFE5EDA000A8DCE /* Main.storyboard */,
 				100DA5C61AFE5EDA000A8DCE /* Images.xcassets */,
 				100DA5C81AFE5EDA000A8DCE /* LaunchScreen.xib */,
@@ -325,6 +328,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10DFD3A01B1615FD00A6080C /* FollowersViewController.swift in Sources */,
 				10A76C161AFE8EF900CCA966 /* TwitchAPIRequest.swift in Sources */,
 				10A76C141AFE7DF800CCA966 /* Alamofire.swift in Sources */,
 				10DDC6D31AFE9E42009CBCB9 /* Alamofire-SwiftyJSON.swift in Sources */,
