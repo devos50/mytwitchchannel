@@ -20,9 +20,13 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate
         var newNavigationController: UINavigationController? = nil;
         if indexPath.section == 0 && indexPath.row == 0
         {
-            newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("StreamNavigationController") as? UINavigationController
+            newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelNavigationController") as? UINavigationController
         }
         else if indexPath.section == 0 && indexPath.row == 1
+        {
+            newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("StreamNavigationController") as? UINavigationController
+        }
+        else if indexPath.section == 0 && indexPath.row == 2
         {
             newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("SettingsNavigationController") as? UINavigationController
         }

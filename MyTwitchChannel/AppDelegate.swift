@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let menuNavigationController = storyboard.instantiateViewControllerWithIdentifier("MenuNavigationController") as! UINavigationController
-        let centerNavigationController = storyboard.instantiateViewControllerWithIdentifier("StreamNavigationController") as! UINavigationController
+        let centerNavigationController = storyboard.instantiateViewControllerWithIdentifier("ChannelNavigationController") as! UINavigationController
         
         let drawerController = MMDrawerController(centerViewController: centerNavigationController, leftDrawerViewController: menuNavigationController)
         drawerController?.showsShadow = false
@@ -32,6 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.sharedApplication().statusBarStyle = .LightContent
         
         TwitchRequestManager.initializeManager()
+        SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.Black)
         
         return true
     }

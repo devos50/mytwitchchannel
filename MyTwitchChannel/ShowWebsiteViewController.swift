@@ -47,7 +47,8 @@ extension ShowWebsiteViewController : UIWebViewDelegate
             parts = parts[1].componentsSeparatedByString("&")
             
             NSUserDefaults.standardUserDefaults().setObject(parts[0], forKey: "AccessToken")
-            NSNotificationCenter.defaultCenter().postNotificationName("com.martijndevos.MyTwitchChannel.ReloadSettings", object: nil)
+            TwitchRequestManager.initializeManager()
+        NSNotificationCenter.defaultCenter().postNotificationName("com.martijndevos.MyTwitchChannel.ReloadSettings", object: nil)
             
             self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
             
