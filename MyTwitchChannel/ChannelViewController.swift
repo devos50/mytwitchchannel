@@ -30,6 +30,7 @@ class ChannelViewController: UITableViewController
     private var editActionSheet: UIActionSheet?
     private var editStreamGameAlertView: UIAlertView?
     private var editStreamTitleAlertView: UIAlertView?
+    private var showCommercialActionSheet: UIActionSheet?
     
     override func viewDidLoad()
     {
@@ -39,6 +40,7 @@ class ChannelViewController: UITableViewController
         self.navigationItem.leftBarButtonItem = leftBarButtonItem
         
         editActionSheet = UIActionSheet(title: "Edit", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, otherButtonTitles: "Edit stream title", "Edit stream game")
+        showCommercialActionSheet = UIActionSheet(title: "Show commercial", delegate: self, cancelButtonTitle: "Cancel", destructiveButtonTitle: nil, otherButtonTitles: "30 sec", "60 sec", "90 sec", "120 sec", "150 sec", "180 sec")
         
         // create a refresh controller
         self.refreshControl = UIRefreshControl()
@@ -161,8 +163,6 @@ class ChannelViewController: UITableViewController
                 SVProgressHUD.dismiss()
                 if (error != nil)
                 {
-                    self.refreshControl?.endRefreshing()
-                    SVProgressHUD.dismiss()
                     let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
                     errorAlertView.show()
                     return
@@ -181,8 +181,6 @@ class ChannelViewController: UITableViewController
                 SVProgressHUD.dismiss()
                 if (error != nil)
                 {
-                    self.refreshControl?.endRefreshing()
-                    SVProgressHUD.dismiss()
                     let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
                     errorAlertView.show()
                     return
@@ -192,12 +190,50 @@ class ChannelViewController: UITableViewController
         }
     }
     
+    func showCommercial(seconds: Int)
+    {
+        SVProgressHUD.showWithStatus("Saving")
+        
+        TwitchRequestManager.manager!.request(.POST, "https://api.twitch.tv/kraken/channels/" + channelName! + "/commercial", parameters: ["length" : seconds], encoding: ParameterEncoding.URL)
+            .responseJSON { (request, response, data, error) in
+                SVProgressHUD.dismiss()
+                if (error != nil)
+                {
+                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                    errorAlertView.show()
+                    return
+                }
+                
+                if response!.statusCode == 422
+                {
+                    let errorAlertView = UIAlertView(title: "Error", message: "Unable to start a commercial on this channel. You cannot start a commercial within 8 minutes of a previous commercial. This error also shows up when you are offline or not partnered.", delegate: nil, cancelButtonTitle: "Close")
+                    errorAlertView.show()
+                }
+                else
+                {
+                    let successAlertView = UIAlertView(title: "Success", message: "The request has succesfully been submitted.", delegate: nil, cancelButtonTitle: "Close")
+                    successAlertView.show()
+                }
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
     {
         if segue.identifier == "FollowersSegue"
         {
             let vc = segue.destinationViewController as! FollowersViewController
             vc.channelName = self.channelName
+        }
+    }
+}
+
+extension ChannelViewController: UITableViewDelegate
+{
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
+    {
+        if indexPath.section == 4 && indexPath.row == 0
+        {
+            showCommercialActionSheet?.showInView(self.navigationController!.view)
         }
     }
 }
@@ -221,6 +257,14 @@ extension ChannelViewController: UIActionSheetDelegate
             editStreamGameAlertView?.textFieldAtIndex(0)!.placeholder = "Stream game"
             editStreamGameAlertView?.textFieldAtIndex(0)!.text = streamGameLabel.text
             editStreamGameAlertView?.show()
+        }
+        else if actionSheet == showCommercialActionSheet
+        {
+            if buttonIndex == 0 { return }
+            let seconds = [30, 60, 90, 120, 150, 180]
+            let chosenSeconds = seconds[buttonIndex - 1]
+            
+            showCommercial(chosenSeconds)
         }
     }
 }
