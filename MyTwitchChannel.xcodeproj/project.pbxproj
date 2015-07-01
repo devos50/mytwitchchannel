@@ -14,6 +14,7 @@
 		100DA5CA1AFE5EDA000A8DCE /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 100DA5C81AFE5EDA000A8DCE /* LaunchScreen.xib */; };
 		100DA5D61AFE5EDB000A8DCE /* MyTwitchChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 100DA5D51AFE5EDB000A8DCE /* MyTwitchChannelTests.swift */; };
 		10353D8B1B15FB89008A1A89 /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10353D8A1B15FB89008A1A89 /* ChannelViewController.swift */; };
+		107A8A151B43D74400C2EC58 /* SubscriptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107A8A141B43D74400C2EC58 /* SubscriptionsViewController.swift */; };
 		10853A931AFE6D4D000F1AB3 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10853A921AFE6D4D000F1AB3 /* SettingsViewController.swift */; };
 		10853A951AFE6D6A000F1AB3 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10853A941AFE6D6A000F1AB3 /* MenuViewController.swift */; };
 		10853A971AFE7106000F1AB3 /* ShowWebsiteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10853A961AFE7106000F1AB3 /* ShowWebsiteViewController.swift */; };
@@ -48,6 +49,7 @@
 		100DA5D41AFE5EDB000A8DCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		100DA5D51AFE5EDB000A8DCE /* MyTwitchChannelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyTwitchChannelTests.swift; sourceTree = "<group>"; };
 		10353D8A1B15FB89008A1A89 /* ChannelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
+		107A8A141B43D74400C2EC58 /* SubscriptionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SubscriptionsViewController.swift; sourceTree = "<group>"; };
 		10853A8E1AFE612A000F1AB3 /* MyTwitchChannel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MyTwitchChannel-Bridging-Header.h"; sourceTree = "<group>"; };
 		10853A921AFE6D4D000F1AB3 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		10853A941AFE6D6A000F1AB3 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				10853A921AFE6D4D000F1AB3 /* SettingsViewController.swift */,
 				10853A941AFE6D6A000F1AB3 /* MenuViewController.swift */,
 				10353D8A1B15FB89008A1A89 /* ChannelViewController.swift */,
+				107A8A141B43D74400C2EC58 /* SubscriptionsViewController.swift */,
 				10DFD39F1B1615FD00A6080C /* FollowersViewController.swift */,
 				100DA5C31AFE5EDA000A8DCE /* Main.storyboard */,
 				100DA5C61AFE5EDA000A8DCE /* Images.xcassets */,
@@ -339,6 +342,7 @@
 				10353D8B1B15FB89008A1A89 /* ChannelViewController.swift in Sources */,
 				10DDC6D11AFE9E26009CBCB9 /* SwiftyJSON.swift in Sources */,
 				10853A951AFE6D6A000F1AB3 /* MenuViewController.swift in Sources */,
+				107A8A151B43D74400C2EC58 /* SubscriptionsViewController.swift in Sources */,
 				10853A971AFE7106000F1AB3 /* ShowWebsiteViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

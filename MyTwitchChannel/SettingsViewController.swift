@@ -12,7 +12,9 @@ class SettingsViewController: UITableViewController
 {
     @IBOutlet weak var accountNameLabel: UILabel!
     @IBOutlet weak var loginLogoutLabel: UILabel!
+    @IBOutlet weak var serverLabel: UILabel!
     var logoutAlertView: UIAlertView?
+    var streamServers = [JSON]()
     
     override func viewDidLoad()
     {
@@ -26,6 +28,7 @@ class SettingsViewController: UITableViewController
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadSettings", name: "com.martijndevos.MyTwitchChannel.ReloadSettings", object: nil)
         
+        loadStreamServers()
         reloadSettings()
     }
     
@@ -50,6 +53,16 @@ class SettingsViewController: UITableViewController
         {
             loginLogoutLabel.text = "Logout"
             loadAccountName()
+        }
+    }
+    
+    func loadStreamServers()
+    {
+        TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/ingests", parameters: nil, encoding: ParameterEncoding.URL).responseJSON {
+            (request, response, data, error) in
+            var responseJSON = JSON(data!)
+            for server in responseJSON["ingests"] { self.streamServers.append(server.1) }
+            self.serverLabel.text = self.streamServers[0]["name"].description
         }
     }
     

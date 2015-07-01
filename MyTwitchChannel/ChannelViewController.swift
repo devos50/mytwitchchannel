@@ -46,7 +46,7 @@ class ChannelViewController: UITableViewController
         self.refreshControl = UIRefreshControl()
         self.refreshControl?.addTarget(self, action: "pullDownTriggered", forControlEvents: .ValueChanged)
         
-        loadUserData(true)
+        loadChannel(true)
     }
     
     @IBAction func editButtonPressed()
@@ -61,11 +61,13 @@ class ChannelViewController: UITableViewController
     
     func pullDownTriggered()
     {
-        loadUserData(false)
+        loadChannel(false)
     }
     
-    func loadChannel()
+    func loadChannel(showHUD: Bool)
     {
+        if showHUD { SVProgressHUD.showWithStatus("Loading") }
+        
         TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/channel")
             .responseJSON { (request, response, data, error) in
                 if (error != nil)
@@ -77,6 +79,16 @@ class ChannelViewController: UITableViewController
                 var responseJSON = JSON(data!)
                 
                 println(responseJSON)
+                
+                if responseJSON["status"] == 401 {
+                    let errorAlertView = UIAlertView(title: "Error", message: "You are unauthorized to make this call. Try to logout and login with your account under Settings.", delegate: nil, cancelButtonTitle: "Close")
+                    errorAlertView.show()
+                    
+                    self.refreshControl?.endRefreshing()
+                    SVProgressHUD.dismiss()
+                    
+                    return
+                }
                 
                 self.streamTitleLabel.text = responseJSON["status"].description
                 self.streamGameLabel.text = responseJSON["game"].description
@@ -109,6 +121,10 @@ class ChannelViewController: UITableViewController
                 if responseJSON["delay"].description == "null" { self.streamDelayLabel.text = "0" }
                 else { self.streamDelayLabel.text = responseJSON["delay"].description }
                 
+                if responseJSON["partner"].boolValue { self.partneredLabel.text = "Yes" }
+                else { self.partneredLabel.text = "No" }
+                self.channelName = responseJSON["name"].description
+                
                 self.loadNumberSubscriptions()
         }
     }
@@ -129,28 +145,6 @@ class ChannelViewController: UITableViewController
                 
                 self.refreshControl?.endRefreshing()
                 SVProgressHUD.dismiss()
-        }
-    }
-    
-    func loadUserData(showHUD: Bool)
-    {
-        if showHUD { SVProgressHUD.showWithStatus("Loading") }
-        TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/user")
-            .responseJSON { (request, response, data, error) in
-                if (error != nil)
-                {
-                    self.refreshControl?.endRefreshing()
-                    SVProgressHUD.dismiss()
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
-                var responseJSON = JSON(data!)
-                self.channelName = responseJSON["name"].description
-                if responseJSON["partnered"].boolValue { self.partneredLabel.text = "Yes" }
-                else { self.partneredLabel.text = "No" }
-                
-                self.loadChannel()
         }
     }
     
@@ -222,6 +216,11 @@ class ChannelViewController: UITableViewController
         if segue.identifier == "FollowersSegue"
         {
             let vc = segue.destinationViewController as! FollowersViewController
+            vc.channelName = self.channelName
+        }
+        else if segue.identifier == "SubscribersSegue"
+        {
+            let vc = segue.destinationViewController as! SubscriptionsViewController
             vc.channelName = self.channelName
         }
     }
