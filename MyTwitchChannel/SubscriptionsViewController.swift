@@ -26,6 +26,7 @@ class SubscriptionsViewController: UITableViewController
     
     func loadSubscriptions(loadNext: Bool)
     {
+        if !loadNext { subscribers = [] }
         SVProgressHUD.showWithStatus("Loading")
         TwitchRequestManager.manager!.request(.GET, loadNext ? nextURL! : currentURL!)
             .responseJSON { (request, response, data, error) in

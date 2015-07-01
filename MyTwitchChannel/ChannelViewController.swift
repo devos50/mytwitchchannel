@@ -25,6 +25,7 @@ class ChannelViewController: UITableViewController
     @IBOutlet weak var broadcasterLanguageLabel: UILabel!
     @IBOutlet weak var channelLanguageLabel: UILabel!
     @IBOutlet weak var streamDelayLabel: UILabel!
+    @IBOutlet weak var streamImageView: UIImageView!
     
     private var channelName: String?
     private var editActionSheet: UIActionSheet?
@@ -91,7 +92,7 @@ class ChannelViewController: UITableViewController
                 }
                 
                 self.streamTitleLabel.text = responseJSON["status"].description
-                self.streamGameLabel.text = responseJSON["game"].description
+                self.streamGameLabel.text = "Playing " + responseJSON["game"].description
                 self.followersLabel.text = responseJSON["followers"].description
                 self.viewsLabel.text = responseJSON["views"].description
                 
@@ -124,6 +125,9 @@ class ChannelViewController: UITableViewController
                 if responseJSON["partner"].boolValue { self.partneredLabel.text = "Yes" }
                 else { self.partneredLabel.text = "No" }
                 self.channelName = responseJSON["name"].description
+                
+                let logoURL = responseJSON["logo"].description
+                if logoURL != "null" { self.streamImageView.setImageWithURL(NSURL(string: logoURL)!) }
                 
                 self.loadNumberSubscriptions()
         }
