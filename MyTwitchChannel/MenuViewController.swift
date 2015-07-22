@@ -32,6 +32,10 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if indexPath.section == 0 && indexPath.row == 3
         {
+            newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("AccountNavigationController") as? UINavigationController
+        }
+        else if indexPath.section == 0 && indexPath.row == 4
+        {
             newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("SettingsNavigationController") as? UINavigationController
         }
         

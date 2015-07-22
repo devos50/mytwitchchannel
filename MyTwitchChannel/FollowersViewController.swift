@@ -30,11 +30,11 @@ class FollowersViewController: UITableViewController
         SVProgressHUD.showWithStatus("Loading")
         TwitchRequestManager.manager!.request(.GET, loadNext ? nextURL! : currentURL!)
             .responseJSON { (request, response, data, error) in
+                SVProgressHUD.dismiss()
                 if (error != nil)
                 {
                     let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
                     errorAlertView.show()
-                    SVProgressHUD.dismiss()
                     return
                 }
                 var responseJSON = JSON(data!)
@@ -46,7 +46,6 @@ class FollowersViewController: UITableViewController
                 }
                 
                 self.tableView.reloadData()
-                SVProgressHUD.dismiss()
         }
     }
 }

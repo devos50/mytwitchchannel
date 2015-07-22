@@ -127,7 +127,10 @@ class ChannelViewController: UITableViewController
                 self.channelName = responseJSON["name"].description
                 
                 let logoURL = responseJSON["logo"].description
-                if logoURL != "null" { self.streamImageView.setImageWithURL(NSURL(string: logoURL)!) }
+                if logoURL != "null"
+                {
+                    self.streamImageView.setImageWithURL(NSURL(string: logoURL)!, placeholderImage: UIImage(named: "channel_placeholder"))
+                }
                 
                 self.loadNumberSubscriptions()
         }

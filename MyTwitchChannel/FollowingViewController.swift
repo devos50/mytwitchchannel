@@ -1,17 +1,17 @@
 //
-//  SubscriptionsViewController.swift
+//  FollowingViewController.swift
 //  MyTwitchChannel
 //
-//  Created by Martijn de Vos on 01-07-15.
+//  Created by Martijn de Vos on 27-05-15.
 //  Copyright (c) 2015 martijndevos. All rights reserved.
 //
 
 import Foundation
 
-class SubscriptionsViewController: UITableViewController
+class FollowingViewController: UITableViewController
 {
-    private var subscribers = [JSON]()
-    var channelName: String?
+    private var following = [JSON]()
+    var username: String?
     var currentURL: String?
     var nextURL: String?
     
@@ -19,14 +19,14 @@ class SubscriptionsViewController: UITableViewController
     {
         super.viewDidLoad()
         
-        currentURL = "https://api.twitch.tv/kraken/channels/" + channelName! + "/subscriptions"
+        currentURL = "https://api.twitch.tv/kraken/users/" + username! + "/follows/channels"
         
-        loadSubscriptions(false)
+        loadFollowing(false)
     }
     
-    func loadSubscriptions(loadNext: Bool)
+    func loadFollowing(loadNext: Bool)
     {
-        if !loadNext { subscribers = [] }
+        if !loadNext { following = [] }
         SVProgressHUD.showWithStatus("Loading")
         TwitchRequestManager.manager!.request(.GET, loadNext ? nextURL! : currentURL!)
             .responseJSON { (request, response, data, error) in
@@ -37,20 +37,12 @@ class SubscriptionsViewController: UITableViewController
                     errorAlertView.show()
                     return
                 }
-                
                 var responseJSON = JSON(data!)
-                
-                if responseJSON["status"].description == "422"
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: responseJSON["message"].description, delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
-                
+                println(responseJSON)
                 self.nextURL = responseJSON["_links"]["next"].description
-                for follower in responseJSON["subscriptions"]
+                for follower in responseJSON["follows"]
                 {
-                    self.subscribers.append(follower.1)
+                    self.following.append(follower.1)
                 }
                 
                 self.tableView.reloadData()
@@ -58,7 +50,7 @@ class SubscriptionsViewController: UITableViewController
     }
 }
 
-extension SubscriptionsViewController: UITableViewDataSource, UITableViewDelegate
+extension FollowingViewController: UITableViewDataSource, UITableViewDelegate
 {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
@@ -67,13 +59,13 @@ extension SubscriptionsViewController: UITableViewDataSource, UITableViewDelegat
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if subscribers.count == 0 { return 0 }
-        return subscribers.count + 1
+        if following.count == 0 { return 0 }
+        return following.count + 1
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
     {
-        if indexPath.section == 0 && indexPath.row == subscribers.count
+        if indexPath.section == 0 && indexPath.row == following.count
         {
             var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell") as? UITableViewCell
             if(cell == nil)
@@ -83,19 +75,19 @@ extension SubscriptionsViewController: UITableViewDataSource, UITableViewDelegat
             return cell!
         }
         
-        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("SubscriberCell") as? UITableViewCell
+        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("FollowingCell") as? UITableViewCell
         if(cell == nil)
         {
-            cell = UITableViewCell(style: .Default, reuseIdentifier: "SubscriberCell")
+            cell = UITableViewCell(style: .Default, reuseIdentifier: "FollowingCell")
         }
         
-        let followerImageView = cell!.viewWithTag(1) as! UIImageView
-        let followerNameLabel = cell!.viewWithTag(2) as! UILabel
+        let followingImageView = cell!.viewWithTag(1) as! UIImageView
+        let followingNameLabel = cell!.viewWithTag(2) as! UILabel
         
-        followerNameLabel.text = subscribers[indexPath.row]["user"]["display_name"].description
-        let logoURL = subscribers[indexPath.row]["user"]["logo"].description
+        followingNameLabel.text = following[indexPath.row]["channel"]["display_name"].description
+        let logoURL = following[indexPath.row]["channel"]["logo"].description
         
-        followerImageView.setImageWithURL(NSURL(string: logoURL)!)
+        followingImageView.setImageWithURL(NSURL(string: logoURL)!, placeholderImage: UIImage(named: "channel_placeholder"))
         
         return cell!
     }
@@ -107,9 +99,9 @@ extension SubscriptionsViewController: UITableViewDataSource, UITableViewDelegat
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
-        if indexPath.section == 0 && indexPath.row == subscribers.count
+        if indexPath.section == 0 && indexPath.row == following.count
         {
-            loadSubscriptions(true)
+            loadFollowing(true)
         }
     }
 }
