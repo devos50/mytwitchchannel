@@ -7,6 +7,10 @@
 //
 
 import Foundation
+import SVProgressHUD
+import SwiftyJSON
+import Alamofire
+import AFNetworking
 
 class FollowersViewController: UITableViewController
 {
@@ -28,29 +32,28 @@ class FollowersViewController: UITableViewController
     {
         if !loadNext { followers = [] }
         SVProgressHUD.showWithStatus("Loading")
-        TwitchRequestManager.manager!.request(.GET, loadNext ? nextURL! : currentURL!)
-            .responseJSON { (request, response, data, error) in
-                SVProgressHUD.dismiss()
-                if (error != nil)
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
-                var responseJSON = JSON(data!)
-                println(responseJSON)
+        
+        TwitchRequestManager.manager!.request(.GET, loadNext ? nextURL! : currentURL!).responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            if result.isSuccess {
+                var responseJSON = JSON(result.value!)
                 self.nextURL = responseJSON["_links"]["next"].description
                 for follower in responseJSON["follows"]
                 {
                     self.followers.append(follower.1)
                 }
                 
+                SVProgressHUD.dismiss()
                 self.tableView.reloadData()
+            } else {
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+                SVProgressHUD.dismiss()
+            }
         }
     }
 }
 
-extension FollowersViewController: UITableViewDataSource, UITableViewDelegate
+extension FollowersViewController
 {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
@@ -67,7 +70,7 @@ extension FollowersViewController: UITableViewDataSource, UITableViewDelegate
     {
         if indexPath.section == 0 && indexPath.row == followers.count
         {
-            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell") as? UITableViewCell
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell")
             if(cell == nil)
             {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: "LoadMoreCell")
@@ -75,7 +78,7 @@ extension FollowersViewController: UITableViewDataSource, UITableViewDelegate
             return cell!
         }
         
-        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("FollowerCell") as? UITableViewCell
+        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("FollowerCell")
         if(cell == nil)
         {
             cell = UITableViewCell(style: .Default, reuseIdentifier: "FollowerCell")
@@ -85,9 +88,10 @@ extension FollowersViewController: UITableViewDataSource, UITableViewDelegate
         let followerNameLabel = cell!.viewWithTag(2) as! UILabel
         
         followerNameLabel.text = followers[indexPath.row]["user"]["display_name"].description
-        let logoURL = followers[indexPath.row]["user"]["logo"].description
-
-        followerImageView.setImageWithURL(NSURL(string: logoURL)!)
+        var logoURL = followers[indexPath.row]["user"]["logo"].description
+        logoURL = logoURL.stringByReplacingOccurrencesOfString("http://", withString: "https://")
+        
+        followerImageView.setImageWithURL(NSURL(string: logoURL)!, placeholderImage: UIImage(named: "channel_placeholder"))
         
         return cell!
     }

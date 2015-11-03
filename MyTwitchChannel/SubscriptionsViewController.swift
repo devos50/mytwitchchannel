@@ -7,6 +7,10 @@
 //
 
 import Foundation
+import UIKit
+import SwiftyJSON
+import Alamofire
+import SVProgressHUD
 
 class SubscriptionsViewController: UITableViewController
 {
@@ -29,16 +33,16 @@ class SubscriptionsViewController: UITableViewController
         if !loadNext { subscribers = [] }
         SVProgressHUD.showWithStatus("Loading")
         TwitchRequestManager.manager!.request(.GET, loadNext ? nextURL! : currentURL!)
-            .responseJSON { (request, response, data, error) in
+            .responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
                 SVProgressHUD.dismiss()
-                if (error != nil)
+                if result.isFailure
                 {
                     let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
                     errorAlertView.show()
                     return
                 }
                 
-                var responseJSON = JSON(data!)
+                var responseJSON = JSON(result.value!)
                 
                 if responseJSON["status"].description == "422"
                 {
@@ -58,7 +62,7 @@ class SubscriptionsViewController: UITableViewController
     }
 }
 
-extension SubscriptionsViewController: UITableViewDataSource, UITableViewDelegate
+extension SubscriptionsViewController
 {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
@@ -75,7 +79,7 @@ extension SubscriptionsViewController: UITableViewDataSource, UITableViewDelegat
     {
         if indexPath.section == 0 && indexPath.row == subscribers.count
         {
-            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell") as? UITableViewCell
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell")
             if(cell == nil)
             {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: "LoadMoreCell")
@@ -83,7 +87,7 @@ extension SubscriptionsViewController: UITableViewDataSource, UITableViewDelegat
             return cell!
         }
         
-        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("SubscriberCell") as? UITableViewCell
+        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("SubscriberCell")
         if(cell == nil)
         {
             cell = UITableViewCell(style: .Default, reuseIdentifier: "SubscriberCell")

@@ -7,6 +7,11 @@
 //
 
 import Foundation
+import UIKit
+import MMDrawerController
+import SVProgressHUD
+import Alamofire
+import SwiftyJSON
 
 class AccountViewController : UITableViewController
 {
@@ -20,6 +25,7 @@ class AccountViewController : UITableViewController
     
     @IBOutlet weak var emailNotificationsLabel: UILabel!
     @IBOutlet weak var mobileNotificationsLabel: UILabel!
+    @IBOutlet weak var accountImageView: UIImageView!
     
     private var username: String?
     
@@ -52,18 +58,12 @@ class AccountViewController : UITableViewController
         if showHUD { SVProgressHUD.showWithStatus("Loading") }
         
         TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/user")
-            .responseJSON { (request, response, data, error) in
-                SVProgressHUD.dismiss()
-                self.refreshControl?.endRefreshing()
-                if (error != nil)
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
-                var responseJSON = JSON(data!)
-                
-                println(responseJSON)
+            .responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            SVProgressHUD.dismiss()
+            self.refreshControl?.endRefreshing()
+            if result.isSuccess
+            {
+                var responseJSON = JSON(result.value!)
                 
                 if responseJSON["status"] == 401 {
                     let errorAlertView = UIAlertView(title: "Error", message: "You are unauthorized to make this call. Try to logout and login with your account under Settings.", delegate: nil, cancelButtonTitle: "Close")
@@ -96,6 +96,20 @@ class AccountViewController : UITableViewController
                 self.mobileNotificationsLabel.text = responseJSON["notifications"]["push"].boolValue ? "Yes" : "No"
                 
                 self.username = responseJSON["name"].description
+                
+                var logoURL = responseJSON["logo"].description
+                logoURL = logoURL.stringByReplacingOccurrencesOfString("http://", withString: "https://")
+                if logoURL != "null"
+                {
+                    self.accountImageView.setImageWithURL(NSURL(string: logoURL)!, placeholderImage: UIImage(named: "channel_placeholder"))
+                }
+            }
+            else
+            {
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+                return
+            }
         }
     }
     

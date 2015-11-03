@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Alamofire
 
 class TwitchAPIRequest
 {
@@ -16,8 +17,11 @@ class TwitchAPIRequest
         let mutableURLRequest = NSMutableURLRequest(URL: URL)
         mutableURLRequest.HTTPMethod = "GET"
         
-        var JSONSerializationError: NSError? = nil
-        mutableURLRequest.HTTPBody = NSJSONSerialization.dataWithJSONObject([], options: nil, error: &JSONSerializationError)
+        do {
+            mutableURLRequest.HTTPBody = try NSJSONSerialization.dataWithJSONObject([], options: [])
+        } catch {
+            mutableURLRequest.HTTPBody = nil
+        }
         mutableURLRequest.setValue("application/vnd.twitchtv.v3+json", forHTTPHeaderField: "Accept")
         
         return mutableURLRequest

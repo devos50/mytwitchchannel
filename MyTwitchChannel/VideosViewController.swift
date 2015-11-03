@@ -7,6 +7,11 @@
 //
 
 import Foundation
+import UIKit
+import SwiftyJSON
+import Alamofire
+import MMDrawerController
+import SVProgressHUD
 
 class VideosViewController: UITableViewController
 {
@@ -30,11 +35,10 @@ class VideosViewController: UITableViewController
         if !loadNext { videos = [] }
         SVProgressHUD.showWithStatus("Loading")
         TwitchRequestManager.manager!.request(.GET, loadNext ? nextURL! : currentURL!)
-            .responseJSON { (request, response, data, error) in
+            .responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
             SVProgressHUD.dismiss()
-            println(data)
             
-            var responseJSON = JSON(data!)
+            var responseJSON = JSON(result.value!)
             
             if responseJSON["status"].description == "422" || responseJSON["status"].description == "404"
             {
@@ -56,7 +60,7 @@ class VideosViewController: UITableViewController
     }
 }
 
-extension VideosViewController: UITableViewDataSource, UITableViewDelegate
+extension VideosViewController
 {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
@@ -73,7 +77,7 @@ extension VideosViewController: UITableViewDataSource, UITableViewDelegate
     {
         if indexPath.section == 0 && indexPath.row == videos.count
         {
-            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell") as? UITableViewCell
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell")
             if(cell == nil)
             {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: "LoadMoreCell")
@@ -81,7 +85,7 @@ extension VideosViewController: UITableViewDataSource, UITableViewDelegate
             return cell!
         }
         
-        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("VideoCell") as? UITableViewCell
+        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("VideoCell")
         if(cell == nil)
         {
             cell = UITableViewCell(style: .Default, reuseIdentifier: "VideoCell")
@@ -95,13 +99,18 @@ extension VideosViewController: UITableViewDataSource, UITableViewDelegate
         let videoDescriptionLabel2 = cell!.viewWithTag(6) as! UILabel
         
         let video = videos[indexPath.row]
-        videoImageView.setImageWithURL(NSURL(string: video["preview"].description))
+        print("video: \(video)")
+        let videoPreview = video["preview"].description.stringByReplacingOccurrencesOfString("http://", withString: "https://")
+        if let url = NSURL(string: videoPreview) {
+            videoImageView.setImageWithURL(url)
+        }
+        
         videoNameLabel.text = video["title"].description
         videoDescriptionLabel.text = video["description"].description
         videoViewsLabel.text = video["views"].description
         videoDescriptionLabel2.text = video["channel"]["display_name"].description
         
-        let videoDuration = video["length"].description.toInt()!
+        let videoDuration = Int(video["length"].description)!
         let minutes = videoDuration / 60
         let seconds = videoDuration % 60
         videoDurationLabel.text = "\(minutes):\(seconds)"
@@ -121,6 +130,21 @@ extension VideosViewController: UITableViewDataSource, UITableViewDelegate
         {
             loadVideosOfChannel(true)
         }
+        else
+        {
+            // open the VOD in the Twitch app
+            let video = self.videos[indexPath.row]
+            let url = "twitch://video/" + video["_id"].description
+            if UIApplication.sharedApplication().canOpenURL(NSURL(string: url)!)
+            {
+                UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+            }
+            else
+            {
+                let errorAlert = UIAlertView(title: "Twitch app", message: "The official Twitch app was not found. Please install it to view this VOD.", delegate: self, cancelButtonTitle: "Close")
+                errorAlert.show()
+            }
+        }
     }
 }
 
@@ -129,7 +153,7 @@ extension VideosViewController : UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar)
     {
         searchBar.resignFirstResponder()
-        currentURL = "https://api.twitch.tv/kraken/channels/" + searchBar.text + "/videos?limit=10"
+        currentURL = "https://api.twitch.tv/kraken/channels/" + searchBar.text! + "/videos?limit=10"
         loadVideosOfChannel(false)
     }
 }

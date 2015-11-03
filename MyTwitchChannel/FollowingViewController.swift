@@ -7,6 +7,10 @@
 //
 
 import Foundation
+import UIKit
+import SwiftyJSON
+import Alamofire
+import SVProgressHUD
 
 class FollowingViewController: UITableViewController
 {
@@ -29,16 +33,13 @@ class FollowingViewController: UITableViewController
         if !loadNext { following = [] }
         SVProgressHUD.showWithStatus("Loading")
         TwitchRequestManager.manager!.request(.GET, loadNext ? nextURL! : currentURL!)
-            .responseJSON { (request, response, data, error) in
-                SVProgressHUD.dismiss()
-                if (error != nil)
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
-                var responseJSON = JSON(data!)
-                println(responseJSON)
+            .responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            SVProgressHUD.dismiss()
+            
+            if result.isSuccess
+            {
+                var responseJSON = JSON(result.value!)
+                print(responseJSON)
                 self.nextURL = responseJSON["_links"]["next"].description
                 for follower in responseJSON["follows"]
                 {
@@ -46,11 +47,18 @@ class FollowingViewController: UITableViewController
                 }
                 
                 self.tableView.reloadData()
+            }
+            else
+            {
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+                return
+            }
         }
     }
 }
 
-extension FollowingViewController: UITableViewDataSource, UITableViewDelegate
+extension FollowingViewController
 {
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int
     {
@@ -67,7 +75,7 @@ extension FollowingViewController: UITableViewDataSource, UITableViewDelegate
     {
         if indexPath.section == 0 && indexPath.row == following.count
         {
-            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell") as? UITableViewCell
+            var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("LoadMoreCell")
             if(cell == nil)
             {
                 cell = UITableViewCell(style: .Default, reuseIdentifier: "LoadMoreCell")
@@ -75,7 +83,7 @@ extension FollowingViewController: UITableViewDataSource, UITableViewDelegate
             return cell!
         }
         
-        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("FollowingCell") as? UITableViewCell
+        var cell : UITableViewCell? = tableView.dequeueReusableCellWithIdentifier("FollowingCell")
         if(cell == nil)
         {
             cell = UITableViewCell(style: .Default, reuseIdentifier: "FollowingCell")
@@ -83,11 +91,15 @@ extension FollowingViewController: UITableViewDataSource, UITableViewDelegate
         
         let followingImageView = cell!.viewWithTag(1) as! UIImageView
         let followingNameLabel = cell!.viewWithTag(2) as! UILabel
+        let followingDetailLabel = cell!.viewWithTag(3) as! UILabel
         
         followingNameLabel.text = following[indexPath.row]["channel"]["display_name"].description
-        let logoURL = following[indexPath.row]["channel"]["logo"].description
+        var logoURL = following[indexPath.row]["channel"]["logo"].description
+        logoURL = logoURL.stringByReplacingOccurrencesOfString("http://", withString: "https://")
         
         followingImageView.setImageWithURL(NSURL(string: logoURL)!, placeholderImage: UIImage(named: "channel_placeholder"))
+        
+        followingDetailLabel.text = "Followers: " + following[indexPath.row]["channel"]["followers"].description
         
         return cell!
     }

@@ -7,13 +7,17 @@
 //
 
 import Foundation
+import UIKit
 
 class MenuViewController: UITableViewController
 {
-    
+    override func viewDidLoad()
+    {
+        super.viewDidLoad()
+    }
 }
 
-extension MenuViewController: UITableViewDataSource, UITableViewDelegate
+extension MenuViewController
 {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
@@ -32,9 +36,13 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate
         }
         else if indexPath.section == 0 && indexPath.row == 3
         {
-            newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("AccountNavigationController") as? UINavigationController
+            newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("ChatNavigationController") as? UINavigationController
         }
         else if indexPath.section == 0 && indexPath.row == 4
+        {
+            newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("AccountNavigationController") as? UINavigationController
+        }
+        else if indexPath.section == 0 && indexPath.row == 5
         {
             newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("SettingsNavigationController") as? UINavigationController
         }
@@ -46,9 +54,24 @@ extension MenuViewController: UITableViewDataSource, UITableViewDelegate
         self.tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        return CGFloat.min
+    }
+    
     override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         let header = view as! UITableViewHeaderFooterView
-        header.textLabel.textColor = UIColor.blackColor()
+        header.textLabel!.textColor = UIColor.blackColor()
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    {
+        return 44
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat
+    {
+        return 44
     }
 }

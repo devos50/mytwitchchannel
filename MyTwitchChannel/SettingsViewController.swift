@@ -6,7 +6,11 @@
 //  Copyright (c) 2015 martijndevos. All rights reserved.
 //
 
+import UIKit
 import Foundation
+import SwiftyJSON
+import MMDrawerController
+import Alamofire
 
 class SettingsViewController: UITableViewController
 {
@@ -40,9 +44,12 @@ class SettingsViewController: UITableViewController
     func loadAccountName()
     {
         TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/user")
-            .responseJSON { (request, response, data, error) in
-                var responseJSON = JSON(data!)
+            .responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            if result.isSuccess
+            {
+                var responseJSON = JSON(result.value!)
                 self.accountNameLabel.text = responseJSON["name"].description
+            }
         }
     }
     
@@ -59,8 +66,8 @@ class SettingsViewController: UITableViewController
     func loadStreamServers()
     {
         TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/ingests", parameters: nil, encoding: ParameterEncoding.URL).responseJSON {
-            (request, response, data, error) in
-            var responseJSON = JSON(data!)
+            (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            var responseJSON = JSON(result.value!)
             for server in responseJSON["ingests"] { self.streamServers.append(server.1) }
             self.serverLabel.text = self.streamServers[0]["name"].description
         }
@@ -74,7 +81,6 @@ class SettingsViewController: UITableViewController
     func showLoginPage()
     {
         let clientID = "qljlip4ir5oravauh8p49fwoddipw7d"
-        let clientSecret = "3ecsp5prgbercz631uiamj7dkgrofue"
         let redirectURL = "http://auth.laureif80.eighty.axc.nl"
         
         let scopes = "user_read+user_blocks_edit+user_blocks_read+user_follows_edit+channel_read+channel_editor+channel_commercial+channel_stream+channel_subscriptions+user_subscriptions+channel_check_subscription+chat_login"
@@ -101,7 +107,7 @@ extension SettingsViewController : UIAlertViewDelegate
     }
 }
 
-extension SettingsViewController : UITableViewDelegate
+extension SettingsViewController
 {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {

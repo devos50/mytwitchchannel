@@ -7,6 +7,11 @@
 //
 
 import Foundation
+import UIKit
+import MMDrawerController
+import SVProgressHUD
+import Alamofire
+import SwiftyJSON
 
 class ChannelViewController: UITableViewController
 {
@@ -69,17 +74,9 @@ class ChannelViewController: UITableViewController
     {
         if showHUD { SVProgressHUD.showWithStatus("Loading") }
         
-        TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/channel")
-            .responseJSON { (request, response, data, error) in
-                if (error != nil)
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
-                var responseJSON = JSON(data!)
-                
-                println(responseJSON)
+        TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/channel").responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            if result.isSuccess {
+                var responseJSON = JSON(result.value!)
                 
                 if responseJSON["status"] == 401 {
                     let errorAlertView = UIAlertView(title: "Error", message: "You are unauthorized to make this call. Try to logout and login with your account under Settings.", delegate: nil, cancelButtonTitle: "Close")
@@ -126,32 +123,37 @@ class ChannelViewController: UITableViewController
                 else { self.partneredLabel.text = "No" }
                 self.channelName = responseJSON["name"].description
                 
-                let logoURL = responseJSON["logo"].description
+                var logoURL = responseJSON["logo"].description
+                logoURL = logoURL.stringByReplacingOccurrencesOfString("http://", withString: "https://")
                 if logoURL != "null"
                 {
                     self.streamImageView.setImageWithURL(NSURL(string: logoURL)!, placeholderImage: UIImage(named: "channel_placeholder"))
                 }
                 
                 self.loadNumberSubscriptions()
+            }
+            else {
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+            }
         }
     }
     
     func loadNumberSubscriptions()
     {
-        TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/channels/" + self.channelName! + "/subscriptions")
-            .responseJSON { (request, response, data, error) in
-                if (error != nil)
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
-                var responseJSON = JSON(data!)
-                if response!.statusCode == 422 { self.subscribersLabel.text = "-" }
+        TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/channels" + self.channelName! + "/subscriptions").responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            if result.isSuccess {
+                var responseJSON = JSON(result.value!)
+                if response!.statusCode == 422 || responseJSON["_total"].description == "null" { self.subscribersLabel.text = "n/a" }
                 else { self.subscribersLabel.text = responseJSON["_total"].description }
                 
                 self.refreshControl?.endRefreshing()
                 SVProgressHUD.dismiss()
+            } else {
+                
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+            }
         }
     }
     
@@ -159,17 +161,14 @@ class ChannelViewController: UITableViewController
     {
         SVProgressHUD.showWithStatus("Saving")
         
-        TwitchRequestManager.manager!.request(.PUT, "https://api.twitch.tv/kraken/channels/" + channelName!, parameters: ["channel" : ["status" : newTitle]], encoding: ParameterEncoding.URL)
-            .responseJSON { (request, response, data, error) in
-                SVProgressHUD.dismiss()
-                if (error != nil)
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
+        TwitchRequestManager.manager!.request(.PUT, "https://api.twitch.tv/kraken/channels/" + channelName!, parameters: ["channel" : ["status" : newTitle]], encoding: ParameterEncoding.URL).responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            if result.isSuccess {
                 self.streamTitleLabel.text = newTitle
-                var responseJSON = JSON(data!)
+            } else {
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+
+            }
         }
     }
     
@@ -177,17 +176,15 @@ class ChannelViewController: UITableViewController
     {
         SVProgressHUD.showWithStatus("Saving")
         
-        TwitchRequestManager.manager!.request(.PUT, "https://api.twitch.tv/kraken/channels/" + channelName!, parameters: ["channel" : ["game" : newGame]], encoding: ParameterEncoding.URL)
-            .responseJSON { (request, response, data, error) in
-                SVProgressHUD.dismiss()
-                if (error != nil)
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
+        
+        TwitchRequestManager.manager!.request(.PUT, "https://api.twitch.tv/kraken/channels/" + channelName!, parameters: ["channel" : ["game" : newGame]], encoding: ParameterEncoding.URL).responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            if result.isSuccess {
                 self.streamGameLabel.text = newGame
-                var responseJSON = JSON(data!)
+            } else
+            {
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+            }
         }
     }
     
@@ -195,16 +192,8 @@ class ChannelViewController: UITableViewController
     {
         SVProgressHUD.showWithStatus("Saving")
         
-        TwitchRequestManager.manager!.request(.POST, "https://api.twitch.tv/kraken/channels/" + channelName! + "/commercial", parameters: ["length" : seconds], encoding: ParameterEncoding.URL)
-            .responseJSON { (request, response, data, error) in
-                SVProgressHUD.dismiss()
-                if (error != nil)
-                {
-                    let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
-                    errorAlertView.show()
-                    return
-                }
-                
+        TwitchRequestManager.manager!.request(.POST, "https://api.twitch.tv/kraken/channels/" + channelName! + "/commercial", parameters: ["length" : seconds], encoding: ParameterEncoding.URL).responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            if result.isSuccess {
                 if response!.statusCode == 422
                 {
                     let errorAlertView = UIAlertView(title: "Error", message: "Unable to start a commercial on this channel. You cannot start a commercial within 8 minutes of a previous commercial. This error also shows up when you are offline or not partnered.", delegate: nil, cancelButtonTitle: "Close")
@@ -215,6 +204,11 @@ class ChannelViewController: UITableViewController
                     let successAlertView = UIAlertView(title: "Success", message: "The request has succesfully been submitted.", delegate: nil, cancelButtonTitle: "Close")
                     successAlertView.show()
                 }
+            } else
+            {
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+            }
         }
     }
     
@@ -233,7 +227,7 @@ class ChannelViewController: UITableViewController
     }
 }
 
-extension ChannelViewController: UITableViewDelegate
+extension ChannelViewController
 {
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath)
     {
@@ -281,11 +275,11 @@ extension ChannelViewController: UIAlertViewDelegate
     {
         if alertView == editStreamTitleAlertView && buttonIndex == 1
         {
-            updateStreamTitle(alertView.textFieldAtIndex(0)!.text)
+            updateStreamTitle(alertView.textFieldAtIndex(0)!.text!)
         }
         else if alertView == editStreamGameAlertView && buttonIndex == 1
         {
-            updateStreamGame(alertView.textFieldAtIndex(0)!.text)
+            updateStreamGame(alertView.textFieldAtIndex(0)!.text!)
         }
     }
 }

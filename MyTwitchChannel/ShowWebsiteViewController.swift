@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class ShowWebsiteViewController: UIViewController
 {
@@ -40,10 +41,10 @@ extension ShowWebsiteViewController : UIWebViewDelegate
     func webView(webView: UIWebView, shouldStartLoadWithRequest request: NSURLRequest, navigationType: UIWebViewNavigationType) -> Bool
     {
         let url = request.URL!.absoluteString
-        if startsWith(url!, "http://auth.laureif80.eighty.axc.nl")
+        if (url).characters.startsWith("http://auth.laureif80.eighty.axc.nl".characters)
         {
             // captured login attempt
-            var parts = url!.componentsSeparatedByString("=")
+            var parts = url.componentsSeparatedByString("=")
             parts = parts[1].componentsSeparatedByString("&")
             
             NSUserDefaults.standardUserDefaults().setObject(parts[0], forKey: "AccessToken")
