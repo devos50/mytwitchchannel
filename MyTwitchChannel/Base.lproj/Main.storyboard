@@ -427,6 +427,8 @@
                         <outlet property="accountNameLabel" destination="eqS-Oi-du4" id="PwT-MS-lcO"/>
                         <outlet property="loginLogoutLabel" destination="XQ5-z3-CYq" id="yXk-A1-4Hz"/>
                         <outlet property="serverLabel" destination="1UN-HJ-iv7" id="Z9s-5v-kI1"/>
+                        <outlet property="streamOrientationLabel" destination="1FB-tK-dcG" id="xMI-AA-ECY"/>
+                        <outlet property="streamQualityLabel" destination="lGw-SS-Bs3" id="imu-Ii-fSb"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XPy-tD-5Za" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1672,7 +1674,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FPS: -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Idv-AU-ia6">
-                                <rect key="frame" x="8" y="352" width="295" height="21"/>
+                                <rect key="frame" x="8" y="352" width="192" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="SJR-Sj-Qn3"/>
                                 </constraints>
@@ -1681,16 +1683,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KA0-SQ-iho">
-                                <rect key="frame" x="8" y="381" width="159" height="30"/>
-                                <color key="backgroundColor" red="0.3921568627" green="0.25490196079999999" blue="0.64705882349999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="280" y="352" width="32" height="32"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="159" id="Pic-RR-Z91"/>
-                                    <constraint firstAttribute="height" constant="30" id="iAx-25-2Yl"/>
+                                    <constraint firstAttribute="width" constant="32" id="Q2s-p9-H69"/>
+                                    <constraint firstAttribute="height" constant="32" id="bGg-Sz-lds"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                <state key="normal" title="Change camera">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                                <state key="normal" backgroundImage="change_camera"/>
                                 <connections>
                                     <action selector="changeCamera" destination="ZAq-8x-vnv" eventType="touchUpInside" id="JdB-Wm-y3K"/>
                                 </connections>
@@ -1702,10 +1701,10 @@
                             <constraint firstItem="Idv-AU-ia6" firstAttribute="leading" secondItem="NkP-Jp-x76" secondAttribute="leading" constant="8" id="6TP-Ii-weD"/>
                             <constraint firstItem="TMY-0c-fJf" firstAttribute="leading" secondItem="NkP-Jp-x76" secondAttribute="leading" id="CND-GR-Bwa"/>
                             <constraint firstAttribute="trailing" secondItem="TMY-0c-fJf" secondAttribute="trailing" id="Cbj-tu-UTC"/>
-                            <constraint firstAttribute="trailing" secondItem="Idv-AU-ia6" secondAttribute="trailing" constant="17" id="Urd-Kz-se3"/>
-                            <constraint firstItem="KA0-SQ-iho" firstAttribute="leading" secondItem="NkP-Jp-x76" secondAttribute="leading" constant="8" id="c7L-dZ-vPt"/>
+                            <constraint firstItem="KA0-SQ-iho" firstAttribute="top" secondItem="TMY-0c-fJf" secondAttribute="bottom" constant="8" id="Do3-0E-LC3"/>
+                            <constraint firstAttribute="trailing" secondItem="Idv-AU-ia6" secondAttribute="trailing" constant="120" id="Urd-Kz-se3"/>
+                            <constraint firstAttribute="trailing" secondItem="KA0-SQ-iho" secondAttribute="trailing" constant="8" id="Vuy-lo-5Pa"/>
                             <constraint firstItem="TMY-0c-fJf" firstAttribute="top" secondItem="H3w-Tw-7W4" secondAttribute="bottom" id="gtX-JH-PHh"/>
-                            <constraint firstItem="KA0-SQ-iho" firstAttribute="top" secondItem="Idv-AU-ia6" secondAttribute="bottom" constant="8" id="obJ-by-Okx"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Stream" id="4pN-aD-OxK">
@@ -1987,6 +1986,7 @@
     </scenes>
     <resources>
         <image name="account_menu" width="128" height="128"/>
+        <image name="change_camera" width="64" height="64"/>
         <image name="channel_placeholder" width="300" height="300"/>
         <image name="chat_menu" width="128" height="128"/>
         <image name="clock" width="128" height="128"/>

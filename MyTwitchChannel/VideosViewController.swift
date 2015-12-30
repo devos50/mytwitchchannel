@@ -153,7 +153,7 @@ extension VideosViewController : UISearchBarDelegate
     func searchBarSearchButtonClicked(searchBar: UISearchBar)
     {
         searchBar.resignFirstResponder()
-        currentURL = "https://api.twitch.tv/kraken/channels/" + searchBar.text! + "/videos?limit=10"
+        currentURL = "https://api.twitch.tv/kraken/channels/" + searchBar.text!.stringByReplacingOccurrencesOfString(" ", withString: "%20") + "/videos?limit=10"
         loadVideosOfChannel(false)
     }
 }

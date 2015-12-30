@@ -47,7 +47,7 @@ class IRCManager
         else if message.code == "376"
         {
             // join channel
-            let data = "JOIN #c9sneaky\n".dataUsingEncoding(NSUTF8StringEncoding)
+            let data = "JOIN #shroud\n".dataUsingEncoding(NSUTF8StringEncoding)
             socket?.writeData(data, withTimeout: -1, tag: 0)
         }
     }

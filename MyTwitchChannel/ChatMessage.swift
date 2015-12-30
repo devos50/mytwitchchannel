@@ -37,10 +37,13 @@ class ChatMessage
         print("text: \(text)")
         
         var message = ""
-        for i in 3...parts.count-1
+        if parts.count > 3
         {
-            print("appending \(parts[i])")
-            message += parts[i] + " "
+            for i in 3...parts.count-1
+            {
+                print("appending \(parts[i])")
+                message += parts[i] + " "
+            }
         }
         message = String(message.characters.dropLast())
         

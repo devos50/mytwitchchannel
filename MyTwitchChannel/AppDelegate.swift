@@ -36,6 +36,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         TwitchRequestManager.initializeManager()
         SVProgressHUD.setDefaultMaskType(SVProgressHUDMaskType.Black)
         
+        // initialize some NSUserDefault variables
+        if NSUserDefaults.standardUserDefaults().stringForKey("StreamQuality") == nil
+        {
+            NSUserDefaults.standardUserDefaults().setObject("medium", forKey: "StreamQuality")
+        }
+        if NSUserDefaults.standardUserDefaults().stringForKey("StreamOrientation") == nil
+        {
+            NSUserDefaults.standardUserDefaults().setObject("portrait", forKey: "StreamOrientation")
+        }
+        NSUserDefaults.standardUserDefaults().synchronize()
+        
         return true
     }
 
