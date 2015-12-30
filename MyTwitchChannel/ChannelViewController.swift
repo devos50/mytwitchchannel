@@ -89,7 +89,7 @@ class ChannelViewController: UITableViewController
                 }
                 
                 self.streamTitleLabel.text = responseJSON["status"].description
-                self.streamGameLabel.text = "Playing " + responseJSON["game"].description
+                self.streamGameLabel.text = "Playing " + ((responseJSON["game"].description == "null") ? "-" : responseJSON["game"].description)
                 self.followersLabel.text = responseJSON["followers"].description
                 self.viewsLabel.text = responseJSON["views"].description
                 

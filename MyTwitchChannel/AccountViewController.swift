@@ -120,10 +120,10 @@ class AccountViewController : UITableViewController
             let vc = segue.destinationViewController as! FollowingViewController
             vc.username = self.username
         }
-        else if segue.identifier == "SubscribersSegue"
+        else if segue.identifier == "BlockedUsersSegue"
         {
-            //let vc = segue.destinationViewController as! SubscriptionsViewController
-            //vc.channelName = self.channelName
+            let vc = segue.destinationViewController as! BlockedUsersViewController
+            vc.username = self.username
         }
     }
 }

@@ -36,6 +36,21 @@ class IRCManager
     {
         socket!.disconnect()
     }
+    
+    func handleChatMessage(message: ChatMessage)
+    {
+        if message.type == .Ping
+        {
+            let data = "PONG \(message.sender)\n".dataUsingEncoding(NSUTF8StringEncoding)
+            socket?.writeData(data, withTimeout: -1, tag: 0)
+        }
+        else if message.code == "376"
+        {
+            // join channel
+            let data = "JOIN #c9sneaky\n".dataUsingEncoding(NSUTF8StringEncoding)
+            socket?.writeData(data, withTimeout: -1, tag: 0)
+        }
+    }
 }
 
 extension IRCManager: GCDAsyncSocketDelegate
@@ -64,7 +79,12 @@ extension IRCManager: GCDAsyncSocketDelegate
     {
         let str = NSString(data: data, encoding: NSUTF8StringEncoding)
         if let message = str {
-            print("str: \(message)")
+            let parts = message.componentsSeparatedByString("\n")
+            for part in parts
+            {
+                if part.characters.count == 0 { continue }
+                handleChatMessage(ChatMessage.parseMessage(part as String))
+            }
         }
         
         socket?.readDataWithTimeout(-1, tag: 0)
