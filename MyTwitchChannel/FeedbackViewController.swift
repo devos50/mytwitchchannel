@@ -10,6 +10,7 @@ import Foundation
 import ActionSheetPicker_3_0
 import Alamofire
 import SVProgressHUD
+import MMDrawerController
 
 class FeedbackViewController: UITableViewController
 {
@@ -30,6 +31,14 @@ class FeedbackViewController: UITableViewController
             self.feedbackRegardingLabel.text = regardingFeedbackChoices[selectedIndex]
             
         }, cancelBlock: nil, origin: self.navigationController?.view)
+        
+        let leftBarButtonItem = MMDrawerBarButtonItem(target: self, action: "leftBarButtonPressed:")
+        self.navigationItem.leftBarButtonItem = leftBarButtonItem
+    }
+    
+    func leftBarButtonPressed(b: UIBarButtonItem)
+    {
+        self.mm_drawerController.toggleDrawerSide(.Left, animated: true, completion: nil)
     }
     
     @IBAction func sendButtonPressed()
