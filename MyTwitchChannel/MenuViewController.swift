@@ -46,6 +46,10 @@ extension MenuViewController
         {
             newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("SettingsNavigationController") as? UINavigationController
         }
+        else if indexPath.section == 0 && indexPath.row == 6
+        {
+            newNavigationController = self.storyboard?.instantiateViewControllerWithIdentifier("FeedbackNavigationController") as? UINavigationController
+        }
         
         if(newNavigationController != nil)
         {

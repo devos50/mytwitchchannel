@@ -42,6 +42,7 @@
 		42D9F8A7FAB72314E592D00B /* Pods_MyTwitchChannel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B18531453B49A87ED1847C65 /* Pods_MyTwitchChannel.framework */; };
 		9F0C505F1B5FDEA90057D570 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0C505E1B5FDEA90057D570 /* ChatViewController.swift */; };
 		9F3B25131C3467F2007CBD42 /* BlockedUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3B25121C3467F2007CBD42 /* BlockedUsersViewController.swift */; };
+		9F3D2A031C348F47009F2546 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F3D2A021C348F47009F2546 /* FeedbackViewController.swift */; };
 		9F8F2C871BC06B7C000FB7B9 /* ChatMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F8F2C861BC06B7C000FB7B9 /* ChatMessage.swift */; };
 		9FE95FD51B5FBAC80040FE4C /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE95FD41B5FBAC80040FE4C /* AccountViewController.swift */; };
 		9FE95FD71B5FC7A10040FE4C /* FollowingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FE95FD61B5FC7A10040FE4C /* FollowingViewController.swift */; };
@@ -205,6 +206,7 @@
 		6E8D97F95E773AF7F244125F /* Pods-MyTwitchChannel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MyTwitchChannel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MyTwitchChannel/Pods-MyTwitchChannel.debug.xcconfig"; sourceTree = "<group>"; };
 		9F0C505E1B5FDEA90057D570 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		9F3B25121C3467F2007CBD42 /* BlockedUsersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsersViewController.swift; sourceTree = "<group>"; };
+		9F3D2A021C348F47009F2546 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		9F8F2C861BC06B7C000FB7B9 /* ChatMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMessage.swift; sourceTree = "<group>"; };
 		9FE95FD41B5FBAC80040FE4C /* AccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		9FE95FD61B5FC7A10040FE4C /* FollowingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingViewController.swift; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 				9FE95FD81B5FD9B40040FE4C /* IRCManager.swift */,
 				9F0C505E1B5FDEA90057D570 /* ChatViewController.swift */,
 				9F3B25121C3467F2007CBD42 /* BlockedUsersViewController.swift */,
+				9F3D2A021C348F47009F2546 /* FeedbackViewController.swift */,
 			);
 			path = MyTwitchChannel;
 			sourceTree = "<group>";
@@ -816,6 +819,7 @@
 				100DA5C21AFE5EDA000A8DCE /* StreamViewController.swift in Sources */,
 				100DA5C01AFE5EDA000A8DCE /* AppDelegate.swift in Sources */,
 				10DDC6CE1AFE98C4009CBCB9 /* TwitchRequestManager.swift in Sources */,
+				9F3D2A031C348F47009F2546 /* FeedbackViewController.swift in Sources */,
 				10853A931AFE6D4D000F1AB3 /* SettingsViewController.swift in Sources */,
 				9FE95FD71B5FC7A10040FE4C /* FollowingViewController.swift in Sources */,
 				10353D8B1B15FB89008A1A89 /* ChannelViewController.swift in Sources */,
