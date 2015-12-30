@@ -9,12 +9,19 @@
 import Foundation
 import CocoaAsyncSocket
 
+protocol IRCManagerDelegate
+{
+    func receivedChatMessage(message: ChatMessage)
+}
+
 class IRCManager
 {
     static let sharedManager = IRCManager()
-    var connected = false
-    var socket: GCDAsyncSocket?
-    var channelToJoin: String?
+    private var connected = false
+    private var socket: GCDAsyncSocket?
+    var delegate: IRCManagerDelegate?
+    private var readyToJoinChannel = false
+    private var currentChannel = ""
     
     init()
     {
@@ -37,6 +44,19 @@ class IRCManager
         socket!.disconnect()
     }
     
+    func joinChannel(channelName: String)
+    {
+        let data = "JOIN #\(channelName)\n".dataUsingEncoding(NSUTF8StringEncoding)
+        socket?.writeData(data, withTimeout: -1, tag: 0)
+    }
+    
+    func leaveCurrentChannel()
+    {
+        let data = "PART #\(currentChannel)\n".dataUsingEncoding(NSUTF8StringEncoding)
+        socket?.writeData(data, withTimeout: -1, tag: 0)
+        currentChannel = ""
+    }
+    
     func handleChatMessage(message: ChatMessage)
     {
         if message.type == .Ping
@@ -46,9 +66,11 @@ class IRCManager
         }
         else if message.code == "376"
         {
-            // join channel
-            let data = "JOIN #shroud\n".dataUsingEncoding(NSUTF8StringEncoding)
-            socket?.writeData(data, withTimeout: -1, tag: 0)
+            readyToJoinChannel = true
+        }
+        else
+        {
+            delegate?.receivedChatMessage(message)
         }
     }
 }
