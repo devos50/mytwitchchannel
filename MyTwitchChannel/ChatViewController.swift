@@ -29,7 +29,13 @@ class ChatViewController: UIViewController
         chatManager.delegate = self
         updateUI()
         
-        chatManager.connect()
+        let token = NSUserDefaults.standardUserDefaults().stringForKey("AccessToken")
+        if token == nil
+        {
+            let errorAlert = UIAlertView(title: "Notice", message: "It appears that you do not have a valid access token. Please login with your account under Settings.", delegate: nil, cancelButtonTitle: "Close")
+            errorAlert.show()
+        }
+        else { chatManager.connect() }
     }
     
     func updateUI () {

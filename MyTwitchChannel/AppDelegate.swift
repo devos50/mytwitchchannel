@@ -9,6 +9,8 @@
 import UIKit
 import MMDrawerController
 import SVProgressHUD
+import Fabric
+import Crashlytics
 
 let AD_ID = "ca-app-pub-7225770687990392/7394127466"
 
@@ -20,6 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        Fabric.with([Crashlytics.self])
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let menuNavigationController = storyboard.instantiateViewControllerWithIdentifier("MenuNavigationController") as! UINavigationController
