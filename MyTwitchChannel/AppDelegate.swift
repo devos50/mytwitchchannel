@@ -10,6 +10,8 @@ import UIKit
 import MMDrawerController
 import SVProgressHUD
 
+let AD_ID = "ca-app-pub-7225770687990392/7394127466"
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -44,6 +46,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if NSUserDefaults.standardUserDefaults().stringForKey("StreamOrientation") == nil
         {
             NSUserDefaults.standardUserDefaults().setObject("portrait", forKey: "StreamOrientation")
+        }
+        if NSUserDefaults.standardUserDefaults().stringForKey("EnableAds") == nil
+        {
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "EnableAds")
         }
         NSUserDefaults.standardUserDefaults().synchronize()
         

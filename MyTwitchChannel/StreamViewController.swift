@@ -11,17 +11,20 @@ import MMDrawerController
 import SVProgressHUD
 import Alamofire
 import SwiftyJSON
+import GoogleMobileAds
 
 class StreamViewController: UIViewController
 {
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var fpsLabel: UILabel!
+    @IBOutlet weak var adView: GADBannerView!
+    @IBOutlet weak var rightBarButton: UIBarButtonItem!
     private var resolution: MPVideoResolution?
     var broadcastStreamClient: BroadcastStreamClient?
-    let hostUrl = "rtmp://live-ams.twitch.tv:1935/app/"
     private var orientation = AVCaptureVideoOrientation.Portrait
     private var streamIsActive = false
     private var memoryTicker: MemoryTicker?
+    private var streamKey: String?
     
     override func viewDidLoad()
     {
@@ -39,7 +42,26 @@ class StreamViewController: UIViewController
         let chosenQuality = NSUserDefaults.standardUserDefaults().stringForKey("StreamQuality")
         if chosenQuality == "low" { resolution = RESOLUTION_LOW }
         else if chosenQuality == "medium" { resolution = RESOLUTION_MEDIUM }
-        else { resolution = RESOLUTION_HIGH }
+        else { resolution = RESOLUTION_VGA }
+        
+        // load ads if needed
+        if NSUserDefaults.standardUserDefaults().boolForKey("EnableAds")
+        {
+            adView.adUnitID = AD_ID
+            adView.rootViewController = self
+            let request = GADRequest()
+            request.testDevices = [ kGADSimulatorID ]
+            adView.loadRequest(request)
+        }
+        else { adView.hidden = true }
+        
+        // check if you should select a server
+        if NSUserDefaults.standardUserDefaults().stringForKey("StreamServerName") == nil
+        {
+            let errorAlert = UIAlertView(title: "Notice", message: "It appears that you have not selected a preferred Twitch server. Please do so in the Settings menu.", delegate: nil, cancelButtonTitle: "Close")
+            errorAlert.show()
+            rightBarButton.enabled = false
+        }
     }
     
     func tickMemory(num: NSNumber)
@@ -72,9 +94,9 @@ class StreamViewController: UIViewController
                     return
                 }
                 
-                let streamKey = responseJSON["stream_key"].description
+                self.streamKey = responseJSON["stream_key"].description
                 SVProgressHUD.dismiss()
-                self.startStream(streamKey)
+                self.startStream()
             }
             else {
                 let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
@@ -85,9 +107,12 @@ class StreamViewController: UIViewController
         }
     }
     
-    func startStream(streamKey: String)
+    func startStream()
     {
-        broadcastStreamClient = BroadcastStreamClient(hostUrl, resolution: resolution!)
+        var serverUrl = NSUserDefaults.standardUserDefaults().stringForKey("StreamServerURL")!
+        serverUrl = serverUrl.stringByReplacingOccurrencesOfString("{stream_key}", withString: streamKey!)
+        
+        broadcastStreamClient = BroadcastStreamClient(serverUrl, resolution: resolution!)
         broadcastStreamClient?.delegate = self
         broadcastStreamClient?.videoCodecId = MP_VIDEO_CODEC_H264
         broadcastStreamClient?.audioCodecId = MP_AUDIO_CODEC_AAC
@@ -104,7 +129,8 @@ class StreamViewController: UIViewController
         }
         else
         {
-            fetchStreamKey()
+            if streamKey != nil { startStream() }
+            else { fetchStreamKey() }
         }
     }
     

@@ -106,9 +106,11 @@ class AccountViewController : UITableViewController
             }
             else
             {
+                print(result)
                 let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
                 errorAlertView.show()
-                return
+                
+                SVProgressHUD.dismiss()
             }
         }
     }

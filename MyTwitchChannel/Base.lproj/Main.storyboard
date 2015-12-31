@@ -1547,7 +1547,7 @@
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="Fpf-o4-GrT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection footerTitle="If you have any feedback, please fill in the form. Do not send questions, we will not answer them." id="SyD-xA-dU8">
                                 <cells/>
@@ -1565,7 +1565,7 @@
                                                     <rect key="frame" x="15" y="0.0" width="345" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1875,6 +1875,13 @@
                                     <action selector="changeCamera" destination="ZAq-8x-vnv" eventType="touchUpInside" id="JdB-Wm-y3K"/>
                                 </connections>
                             </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3MK-UY-KuT" customClass="GADBannerView">
+                                <rect key="frame" x="0.0" y="518" width="320" height="50"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="dhG-PJ-u17"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.96695106907894746" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1883,8 +1890,11 @@
                             <constraint firstItem="TMY-0c-fJf" firstAttribute="leading" secondItem="NkP-Jp-x76" secondAttribute="leading" id="CND-GR-Bwa"/>
                             <constraint firstAttribute="trailing" secondItem="TMY-0c-fJf" secondAttribute="trailing" id="Cbj-tu-UTC"/>
                             <constraint firstItem="KA0-SQ-iho" firstAttribute="top" secondItem="TMY-0c-fJf" secondAttribute="bottom" constant="8" id="Do3-0E-LC3"/>
+                            <constraint firstItem="3MK-UY-KuT" firstAttribute="leading" secondItem="NkP-Jp-x76" secondAttribute="leading" id="LZU-PL-oIQ"/>
+                            <constraint firstItem="IPB-da-Cos" firstAttribute="top" secondItem="3MK-UY-KuT" secondAttribute="bottom" id="T5v-QH-1hX"/>
                             <constraint firstAttribute="trailing" secondItem="Idv-AU-ia6" secondAttribute="trailing" constant="120" id="Urd-Kz-se3"/>
                             <constraint firstAttribute="trailing" secondItem="KA0-SQ-iho" secondAttribute="trailing" constant="8" id="Vuy-lo-5Pa"/>
+                            <constraint firstAttribute="trailing" secondItem="3MK-UY-KuT" secondAttribute="trailing" id="Za2-Qd-u0P"/>
                             <constraint firstItem="TMY-0c-fJf" firstAttribute="top" secondItem="H3w-Tw-7W4" secondAttribute="bottom" id="gtX-JH-PHh"/>
                         </constraints>
                     </view>
@@ -1897,8 +1907,10 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="adView" destination="3MK-UY-KuT" id="phU-rT-Ewa"/>
                         <outlet property="fpsLabel" destination="Idv-AU-ia6" id="sXq-hB-KBd"/>
                         <outlet property="previewView" destination="TMY-0c-fJf" id="nao-5R-MaB"/>
+                        <outlet property="rightBarButton" destination="6js-Uz-9qq" id="ysB-C5-YXq"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bqV-JY-HEJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
