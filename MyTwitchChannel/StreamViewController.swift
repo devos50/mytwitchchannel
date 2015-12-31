@@ -8,17 +8,20 @@
 
 import UIKit
 import MMDrawerController
+import SVProgressHUD
+import Alamofire
+import SwiftyJSON
 
 class StreamViewController: UIViewController
 {
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var fpsLabel: UILabel!
-    var resolution: MPVideoResolution?
+    private var resolution: MPVideoResolution?
     var broadcastStreamClient: BroadcastStreamClient?
     let hostUrl = "rtmp://live-ams.twitch.tv:1935/app/"
-    let orientation = AVCaptureVideoOrientation.Portrait
-    var streamIsActive = false
-    var memoryTicker: MemoryTicker?
+    private var orientation = AVCaptureVideoOrientation.Portrait
+    private var streamIsActive = false
+    private var memoryTicker: MemoryTicker?
     
     override func viewDidLoad()
     {
@@ -30,7 +33,13 @@ class StreamViewController: UIViewController
         let leftBarButtonItem = MMDrawerBarButtonItem(target: self, action: "leftBarButtonPressed:")
         self.navigationItem.leftBarButtonItem = leftBarButtonItem
         
-        resolution = RESOLUTION_VGA
+        let chosenOrientation = NSUserDefaults.standardUserDefaults().stringForKey("StreamOrientation")
+        if chosenOrientation == "landscape" { orientation = AVCaptureVideoOrientation.LandscapeLeft }
+        
+        let chosenQuality = NSUserDefaults.standardUserDefaults().stringForKey("StreamQuality")
+        if chosenQuality == "low" { resolution = RESOLUTION_LOW }
+        else if chosenQuality == "medium" { resolution = RESOLUTION_MEDIUM }
+        else { resolution = RESOLUTION_HIGH }
     }
     
     func tickMemory(num: NSNumber)
@@ -44,6 +53,49 @@ class StreamViewController: UIViewController
         self.mm_drawerController.toggleDrawerSide(.Left, animated: true, completion: nil)
     }
     
+    func fetchStreamKey()
+    {
+        SVProgressHUD.showWithStatus("Loading key")
+        
+        TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/channel").responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
+            if result.isSuccess {
+                var responseJSON = JSON(result.value!)
+                
+                print(responseJSON)
+                
+                if responseJSON["status"] == 401 {
+                    let errorAlertView = UIAlertView(title: "Error", message: "You are unauthorized to make this call. Try to logout and login with your account under Settings.", delegate: nil, cancelButtonTitle: "Close")
+                    errorAlertView.show()
+                    
+                    SVProgressHUD.dismiss()
+                    
+                    return
+                }
+                
+                let streamKey = responseJSON["stream_key"].description
+                SVProgressHUD.dismiss()
+                self.startStream(streamKey)
+            }
+            else {
+                let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
+                errorAlertView.show()
+                
+                SVProgressHUD.dismiss()
+            }
+        }
+    }
+    
+    func startStream(streamKey: String)
+    {
+        broadcastStreamClient = BroadcastStreamClient(hostUrl, resolution: resolution!)
+        broadcastStreamClient?.delegate = self
+        broadcastStreamClient?.videoCodecId = MP_VIDEO_CODEC_H264
+        broadcastStreamClient?.audioCodecId = MP_AUDIO_CODEC_AAC
+        broadcastStreamClient?.setVideoOrientation(orientation)
+        broadcastStreamClient?.stream(streamKey, publishType: PUBLISH_LIVE)
+        streamIsActive = true
+    }
+    
     @IBAction func startButtonPressed()
     {
         if streamIsActive
@@ -52,13 +104,7 @@ class StreamViewController: UIViewController
         }
         else
         {
-            broadcastStreamClient = BroadcastStreamClient(hostUrl, resolution: resolution!)
-            broadcastStreamClient?.delegate = self
-            broadcastStreamClient?.videoCodecId = MP_VIDEO_CODEC_H264
-            broadcastStreamClient?.audioCodecId = MP_AUDIO_CODEC_AAC
-            broadcastStreamClient?.setVideoOrientation(orientation)
-            broadcastStreamClient?.stream("live_47555293_xC0hr682Ll20WZxv6AAtv4w6sUfRdr", publishType: PUBLISH_LIVE)
-            streamIsActive = true
+            fetchStreamKey()
         }
     }
     

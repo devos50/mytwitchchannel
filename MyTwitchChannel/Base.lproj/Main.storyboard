@@ -29,7 +29,7 @@
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="record_menu" translatesAutoresizingMaskIntoConstraints="NO" id="QyP-Ya-6dJ">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="channel" translatesAutoresizingMaskIntoConstraints="NO" id="QyP-Ya-6dJ">
                                                     <rect key="frame" x="10" y="8" width="28" height="28"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="28" id="P9B-fQ-82K"/>
@@ -1490,7 +1490,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" textLabel="ZVl-Hq-FRV" style="IBUITableViewCellStyleDefault" id="vBj-TE-hfk">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageCell" textLabel="ZVl-Hq-FRV" style="IBUITableViewCellStyleDefault" id="vBj-TE-hfk">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vBj-TE-hfk" id="Vxl-eT-3fj">
@@ -2168,6 +2168,7 @@
     <resources>
         <image name="account_menu" width="128" height="128"/>
         <image name="change_camera" width="64" height="64"/>
+        <image name="channel" width="128" height="128"/>
         <image name="channel_placeholder" width="300" height="300"/>
         <image name="chat_menu" width="128" height="128"/>
         <image name="clock" width="128" height="128"/>

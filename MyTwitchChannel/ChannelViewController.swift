@@ -78,6 +78,8 @@ class ChannelViewController: UITableViewController
             if result.isSuccess {
                 var responseJSON = JSON(result.value!)
                 
+                print(responseJSON)
+                
                 if responseJSON["status"] == 401 {
                     let errorAlertView = UIAlertView(title: "Error", message: "You are unauthorized to make this call. Try to logout and login with your account under Settings.", delegate: nil, cancelButtonTitle: "Close")
                     errorAlertView.show()

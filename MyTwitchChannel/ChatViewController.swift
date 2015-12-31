@@ -95,6 +95,11 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate
         {
             cell = UITableViewCell(style: .Default, reuseIdentifier: "ChatMessageCell")
         }
+        
+        let chatMessage = chatMessages[indexPath.row]
+        
+        cell?.textLabel?.text = chatMessage.message
+        
         return cell!
     }
 }
