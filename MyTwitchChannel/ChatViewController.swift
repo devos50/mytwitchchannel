@@ -36,6 +36,9 @@ class ChatViewController: UIViewController
             errorAlert.show()
         }
         else { chatManager.connect() }
+        
+        self.tableView.estimatedRowHeight = 22
+        self.tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     func updateUI () {
@@ -104,7 +107,8 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate
         
         let chatMessage = chatMessages[indexPath.row]
         
-        cell?.textLabel?.text = chatMessage.message
+        let messageLabel = cell?.viewWithTag(1) as! UILabel
+        messageLabel.text = chatMessage.message
         
         return cell!
     }

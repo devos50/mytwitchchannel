@@ -10,7 +10,7 @@ import Foundation
 
 enum ChatMessageType
 {
-    case TextMessage, Ping
+    case TextMessage, Ping, Other
 }
 
 class ChatMessage
@@ -18,7 +18,7 @@ class ChatMessage
     var sender: String
     var message: String
     var code: String
-    var type: ChatMessageType = .TextMessage
+    var type: ChatMessageType = .Other
     
     init(code: String, sender: String, message: String, type: ChatMessageType)
     {
@@ -41,12 +41,19 @@ class ChatMessage
         {
             for i in 3...parts.count-1
             {
-                print("appending \(parts[i])")
-                message += parts[i] + " "
+                var partToAppend = parts[i]
+                if i == 3 && parts[i].characters.count > 0 && parts[i].hasPrefix(":")
+                {
+                    // strip the first : from the front
+                    partToAppend = String(parts[i].characters.dropFirst())
+                }
+                message += partToAppend + " "
             }
         }
         message = String(message.characters.dropLast())
         
-        return ChatMessage(code: parts[1], sender: parts[2], message: message, type: .TextMessage)
+        let type: ChatMessageType = (parts[1] == "PRIVMSG") ? .TextMessage : .Other
+        
+        return ChatMessage(code: parts[1], sender: parts[2], message: message, type: type)
     }
 }

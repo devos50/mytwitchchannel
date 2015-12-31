@@ -70,7 +70,7 @@ class IRCManager
         }
         else
         {
-            delegate?.receivedChatMessage(message)
+            if message.type == .TextMessage { delegate?.receivedChatMessage(message) }
         }
     }
 }
