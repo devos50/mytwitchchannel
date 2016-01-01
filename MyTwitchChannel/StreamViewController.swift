@@ -50,7 +50,7 @@ class StreamViewController: UIViewController
             adView.adUnitID = AD_ID
             adView.rootViewController = self
             let request = GADRequest()
-            request.testDevices = [ kGADSimulatorID ]
+            request.testDevices = [ kGADSimulatorID, "69c340aefb538925732f68b596093eca" ]
             adView.loadRequest(request)
         }
         else { adView.hidden = true }
@@ -95,6 +95,7 @@ class StreamViewController: UIViewController
                 }
                 
                 self.streamKey = responseJSON["stream_key"].description
+                print("Stream key: \(self.streamKey)")
                 SVProgressHUD.dismiss()
                 self.startStream()
             }
@@ -110,7 +111,8 @@ class StreamViewController: UIViewController
     func startStream()
     {
         var serverUrl = NSUserDefaults.standardUserDefaults().stringForKey("StreamServerURL")!
-        serverUrl = serverUrl.stringByReplacingOccurrencesOfString("{stream_key}", withString: streamKey!)
+        serverUrl = serverUrl.stringByReplacingOccurrencesOfString("{stream_key}", withString: "")
+        print("server url: \(serverUrl)")
         
         broadcastStreamClient = BroadcastStreamClient(serverUrl, resolution: resolution!)
         broadcastStreamClient?.delegate = self

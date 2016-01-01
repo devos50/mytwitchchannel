@@ -107,8 +107,11 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate
         
         let chatMessage = chatMessages[indexPath.row]
         
+        var sender = chatMessage.sender.componentsSeparatedByString("!")[0]
+        sender = String(sender.characters.dropFirst())
+        
         let messageLabel = cell?.viewWithTag(1) as! UILabel
-        messageLabel.text = chatMessage.message
+        messageLabel.text = sender + ": " + String(chatMessage.message.characters.dropLast())
         
         return cell!
     }
@@ -118,8 +121,15 @@ extension ChatViewController: IRCManagerDelegate
 {
     func receivedChatMessage(message: ChatMessage)
     {
+        if chatMessages.count == 60 { chatMessages.removeFirst() }
         chatMessages.append(message)
         self.tableView.reloadData()
+        
+        if(tableView.contentOffset.y >= (tableView.contentSize.height - tableView.frame.size.height))
+        {
+            let lastIndex = NSIndexPath(forRow: chatMessages.count - 1, inSection: 0)
+            self.tableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: .Bottom, animated: false)
+        }
     }
 }
 

@@ -1490,15 +1490,15 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageCell" rowHeight="22" id="vBj-TE-hfk">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="22"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ChatMessageCell" rowHeight="24" id="vBj-TE-hfk">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="24"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vBj-TE-hfk" id="Vxl-eT-3fj">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="22"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="24"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tez-DE-0er">
-                                                    <rect key="frame" x="8" y="2" width="359" height="17.5"/>
+                                                    <rect key="frame" x="8" y="3" width="359" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -1507,8 +1507,8 @@
                                             <constraints>
                                                 <constraint firstItem="tez-DE-0er" firstAttribute="leading" secondItem="Vxl-eT-3fj" secondAttribute="leading" constant="8" id="Nld-sH-lZW"/>
                                                 <constraint firstAttribute="trailing" secondItem="tez-DE-0er" secondAttribute="trailing" constant="8" id="Xdc-oX-zL9"/>
-                                                <constraint firstItem="tez-DE-0er" firstAttribute="top" secondItem="Vxl-eT-3fj" secondAttribute="top" constant="2" id="qoq-PK-sWm"/>
-                                                <constraint firstAttribute="bottom" secondItem="tez-DE-0er" secondAttribute="bottom" constant="2" id="ys1-CM-YG7"/>
+                                                <constraint firstItem="tez-DE-0er" firstAttribute="top" secondItem="Vxl-eT-3fj" secondAttribute="top" constant="3" id="qoq-PK-sWm"/>
+                                                <constraint firstAttribute="bottom" secondItem="tez-DE-0er" secondAttribute="bottom" constant="3" id="ys1-CM-YG7"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

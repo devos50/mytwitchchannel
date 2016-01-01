@@ -20,7 +20,6 @@ class IRCManager
     private var connected = false
     private var socket: GCDAsyncSocket?
     var delegate: IRCManagerDelegate?
-    private var readyToJoinChannel = false
     private var currentChannel = ""
     
     init()
@@ -44,10 +43,17 @@ class IRCManager
         socket!.disconnect()
     }
     
+    func sendTagsRequest()
+    {
+        let data = "CAP REQ :twitch.tv/tags\n".dataUsingEncoding(NSUTF8StringEncoding)
+        socket?.writeData(data, withTimeout: -1, tag: 0)
+    }
+    
     func joinChannel(channelName: String)
     {
         let data = "JOIN #\(channelName)\n".dataUsingEncoding(NSUTF8StringEncoding)
         socket?.writeData(data, withTimeout: -1, tag: 0)
+        currentChannel = channelName
     }
     
     func leaveCurrentChannel()
@@ -64,9 +70,9 @@ class IRCManager
             let data = "PONG \(message.sender)\n".dataUsingEncoding(NSUTF8StringEncoding)
             socket?.writeData(data, withTimeout: -1, tag: 0)
         }
-        else if message.code == "376"
+        else if message.type == .Join
         {
-            readyToJoinChannel = true
+            sendTagsRequest()
         }
         else
         {
