@@ -86,6 +86,7 @@ class IRCManager
         else if message.type == .Join
         {
             sendTagsRequest()
+            delegate?.receivedChatMessage(message)
         }
         else
         {

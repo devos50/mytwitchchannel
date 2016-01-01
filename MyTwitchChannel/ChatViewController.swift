@@ -148,23 +148,35 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate
         
         let chatMessage = chatMessages[indexPath.row]
         
-        var sender = chatMessage.sender.componentsSeparatedByString("!")[0]
-        sender = String(sender.characters.dropFirst())
-        
         let messageLabel = cell?.viewWithTag(1) as! UILabel
         
-        let attributedString = NSMutableAttributedString(string: sender + ": " + String(chatMessage.message.characters.dropLast()))
-        
-        let senderRange = NSMakeRange(0, sender.characters.count + 1)
-        attributedString.beginEditing()
-        if chatMessage.tags["color"] != nil && chatMessage.tags["color"]?.characters.count > 0
+        if chatMessage.type == .Join
         {
-            attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor(hex: chatMessage.tags["color"]!), range: senderRange)
+            let attributedString = NSMutableAttributedString(string: "You have joined the chat room.")
+            attributedString.beginEditing()
+            attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSMakeRange(0, attributedString.string.characters.count))
+            attributedString.endEditing()
+            
+            messageLabel.attributedText = attributedString
         }
-        attributedString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFontOfSize(14), range: senderRange)
-        attributedString.endEditing()
-        
-        messageLabel.attributedText = attributedString
+        else if chatMessage.type == .TextMessage
+        {
+            var sender = chatMessage.sender.componentsSeparatedByString("!")[0]
+            sender = String(sender.characters.dropFirst())
+            
+            let attributedString = NSMutableAttributedString(string: sender + ": " + String(chatMessage.message.characters.dropLast()))
+            
+            let senderRange = NSMakeRange(0, sender.characters.count + 1)
+            attributedString.beginEditing()
+            if chatMessage.tags["color"] != nil && chatMessage.tags["color"]?.characters.count > 0
+            {
+                attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor(hex: chatMessage.tags["color"]!), range: senderRange)
+            }
+            attributedString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFontOfSize(14), range: senderRange)
+            attributedString.endEditing()
+            
+            messageLabel.attributedText = attributedString
+        }
         
         return cell!
     }
