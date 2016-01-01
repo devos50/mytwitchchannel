@@ -184,6 +184,12 @@ extension ChatViewController: IRCManagerDelegate
             self.tableView.scrollToRowAtIndexPath(lastIndex, atScrollPosition: .Bottom, animated: false)
         }
     }
+    
+    func leftChannel()
+    {
+        chatMessages = []
+        self.tableView.reloadData()
+    }
 }
 
 extension ChatViewController: UIAlertViewDelegate

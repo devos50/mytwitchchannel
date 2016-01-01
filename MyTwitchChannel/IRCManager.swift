@@ -12,6 +12,7 @@ import CocoaAsyncSocket
 protocol IRCManagerDelegate
 {
     func receivedChatMessage(message: ChatMessage)
+    func leftChannel()
 }
 
 class IRCManager
@@ -72,6 +73,7 @@ class IRCManager
         let data = "PART #\(currentChannel)\n".dataUsingEncoding(NSUTF8StringEncoding)
         socket?.writeData(data, withTimeout: -1, tag: 0)
         currentChannel = ""
+        delegate?.leftChannel()
     }
     
     func handleChatMessage(message: ChatMessage)
