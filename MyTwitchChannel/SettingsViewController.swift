@@ -67,6 +67,7 @@ class SettingsViewController: UITableViewController
             {
                 var responseJSON = JSON(result.value!)
                 self.accountNameLabel.text = responseJSON["name"].description
+                NSUserDefaults.standardUserDefaults().setObject(responseJSON["name"].description, forKey: "TwitchUsername")
             }
         }
     }
@@ -122,6 +123,7 @@ extension SettingsViewController : UIAlertViewDelegate
         {
             NSUserDefaults.standardUserDefaults().setObject(nil, forKey: "AccessToken")
             loginLogoutLabel.text = "Login"
+            accountNameLabel.text = "-"
         }
     }
 }

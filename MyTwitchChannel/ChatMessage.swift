@@ -19,23 +19,25 @@ class ChatMessage
     var message: String
     var code: String
     var type: ChatMessageType = .Other
+    var tags: [String : String]
     
-    init(code: String, sender: String, message: String, type: ChatMessageType)
+    init(code: String, sender: String, message: String, type: ChatMessageType, tags: [String : String])
     {
         self.sender = sender
         self.message = message
         self.code = code
         self.type = type
+        self.tags = tags
     }
     
     class func parseMessage(text: String) -> ChatMessage
     {
         let parts = text.componentsSeparatedByString(" ")
         
-        print("text: \(text)")
+        // print("text: \(text)")
         
-        if parts[0] == "PING" { return ChatMessage(code: "", sender: parts[1], message: "", type: .Ping) }
-        if parts[1] == "JOIN" { return ChatMessage(code: "", sender: parts[1], message: "", type: .Join) }
+        if parts[0] == "PING" { return ChatMessage(code: "", sender: parts[1], message: "", type: .Ping, tags: [String: String]()) }
+        if parts.count > 0 && parts[1] == "JOIN" { return ChatMessage(code: "", sender: parts[1], message: "", type: .Join, tags: [String: String]()) }
         
         var message = ""
         if parts.count > 4
@@ -55,6 +57,19 @@ class ChatMessage
         
         let type: ChatMessageType = (parts[2] == "PRIVMSG") ? .TextMessage : .Other
         
-        return ChatMessage(code: parts[2], sender: parts[1], message: message, type: type)
+        var tags = [String : String]()
+        if type == .TextMessage
+        {
+            // parse the tags
+            let tagparts = String(parts[0].characters.dropFirst()).componentsSeparatedByString(";")
+            for tagpart in tagparts
+            {
+                let parts2 = tagpart.componentsSeparatedByString("=")
+                if parts2.count != 2 { continue }
+                tags[parts2[0]] = parts2[1]
+            }
+        }
+        
+        return ChatMessage(code: parts[2], sender: parts[1], message: message, type: type, tags: tags)
     }
 }

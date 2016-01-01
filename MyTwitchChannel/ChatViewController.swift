@@ -14,10 +14,15 @@ class ChatViewController: UIViewController
 {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var rightButton: UIBarButtonItem!
+    @IBOutlet weak var chatMessageTextField: UITextField!
+    @IBOutlet weak var bottomMargin: NSLayoutConstraint!
+    @IBOutlet weak var newMessageView: UIView!
+    @IBOutlet weak var sendMessageButton: UIButton!
     private var chatManager = IRCManager.sharedManager
     private var chatMessages = [ChatMessage]()
     private var isInChannel = false
     private var enterChannelAlert: UIAlertView?
+    private var tableViewTapRecognizer: UITapGestureRecognizer?
     
     override func viewDidLoad()
     {
@@ -25,6 +30,11 @@ class ChatViewController: UIViewController
         
         let leftBarButtonItem = MMDrawerBarButtonItem(target: self, action: "leftBarButtonPressed:")
         self.navigationItem.leftBarButtonItem = leftBarButtonItem
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        
+        tableViewTapRecognizer = UITapGestureRecognizer(target: self, action: "didTapTableView")
         
         chatManager.delegate = self
         updateUI()
@@ -39,6 +49,13 @@ class ChatViewController: UIViewController
         
         self.tableView.estimatedRowHeight = 22
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        
+        self.sendMessageButton.enabled = false
+    }
+    
+    func didTapTableView()
+    {
+        chatMessageTextField.resignFirstResponder()
     }
     
     func updateUI () {
@@ -52,12 +69,14 @@ class ChatViewController: UIViewController
                 emptyStateLabel.textAlignment = NSTextAlignment.Center
                 self.tableView.tableFooterView = UIView(frame: CGRectZero)
                 self.rightButton.title = "Join"
+                self.newMessageView.hidden = true
                 // style it
                 
                 self.tableView.backgroundView = emptyStateLabel
             } else {
                 self.tableView.backgroundView = nil
                 self.rightButton.title = "Leave"
+                self.newMessageView.hidden = false
             }
         })
     }
@@ -82,6 +101,28 @@ class ChatViewController: UIViewController
             isInChannel = false
             updateUI()
         }
+    }
+    
+    func keyboardWillShow(notification: NSNotification)
+    {
+        var info = notification.userInfo!
+        let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey]as! NSValue).CGRectValue()
+        self.bottomMargin.constant = CGRectGetHeight(keyboardFrame)
+        tableView.addGestureRecognizer(tableViewTapRecognizer!)
+    }
+    
+    func keyboardWillHide(notification: NSNotification)
+    {
+        self.bottomMargin.constant = 0
+        tableView.removeGestureRecognizer(tableViewTapRecognizer!)
+    }
+    
+    @IBAction func didPressSendButton()
+    {
+        let messageToSend = chatMessageTextField.text!
+        chatManager.sendMessage(messageToSend)
+        chatMessageTextField.text = ""
+        sendMessageButton.enabled = false
     }
 }
 
@@ -111,7 +152,19 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate
         sender = String(sender.characters.dropFirst())
         
         let messageLabel = cell?.viewWithTag(1) as! UILabel
-        messageLabel.text = sender + ": " + String(chatMessage.message.characters.dropLast())
+        
+        let attributedString = NSMutableAttributedString(string: sender + ": " + String(chatMessage.message.characters.dropLast()))
+        
+        let senderRange = NSMakeRange(0, sender.characters.count + 1)
+        attributedString.beginEditing()
+        if chatMessage.tags["color"] != nil && chatMessage.tags["color"]?.characters.count > 0
+        {
+            attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor(hex: chatMessage.tags["color"]!), range: senderRange)
+        }
+        attributedString.addAttribute(NSFontAttributeName, value: UIFont.boldSystemFontOfSize(14), range: senderRange)
+        attributedString.endEditing()
+        
+        messageLabel.attributedText = attributedString
         
         return cell!
     }
@@ -152,5 +205,16 @@ extension ChatViewController: UIAlertViewDelegate
             updateUI()
             self.tableView.reloadData()
         }
+    }
+}
+
+extension ChatViewController: UITextFieldDelegate
+{
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
+    {
+        if (string.characters.count > 0) { sendMessageButton.enabled = true }
+        else { sendMessageButton.enabled = false }
+        
+        return true
     }
 }

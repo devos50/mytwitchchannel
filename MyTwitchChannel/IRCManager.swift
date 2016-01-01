@@ -21,6 +21,7 @@ class IRCManager
     private var socket: GCDAsyncSocket?
     var delegate: IRCManagerDelegate?
     private var currentChannel = ""
+    private var username = ""
     
     init()
     {
@@ -36,6 +37,7 @@ class IRCManager
             error = error1
         }
         print("error: \(error)")
+        username = NSUserDefaults.standardUserDefaults().stringForKey("TwitchUsername")!
     }
     
     func disconnect()
@@ -47,6 +49,15 @@ class IRCManager
     {
         let data = "CAP REQ :twitch.tv/tags\n".dataUsingEncoding(NSUTF8StringEncoding)
         socket?.writeData(data, withTimeout: -1, tag: 0)
+    }
+    
+    func sendMessage(message: String)
+    {
+        let data = "PRIVMSG #\(currentChannel) :\(message)\n".dataUsingEncoding(NSUTF8StringEncoding)
+        socket?.writeData(data, withTimeout: -1, tag: 0)
+        
+        let chatMessage = ChatMessage(code: "1", sender: ":\(username)!\(username)@\(username).tmi.twitch.tv", message: message + "\n", type: .TextMessage, tags: [String: String]())
+        delegate?.receivedChatMessage(chatMessage)
     }
     
     func joinChannel(channelName: String)
@@ -111,6 +122,7 @@ extension IRCManager: GCDAsyncSocketDelegate
             for part in parts
             {
                 if part.characters.count == 0 { continue }
+                print("part: \(part)")
                 handleChatMessage(ChatMessage.parseMessage(part as String))
             }
         }
