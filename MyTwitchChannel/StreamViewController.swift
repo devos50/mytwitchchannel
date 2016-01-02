@@ -23,6 +23,7 @@ class StreamViewController: UIViewController
     private var streamIsActive = false
     private var memoryTicker: MemoryTicker?
     private var streamKey: String?
+    private var attemptsDone = 0
     
     override func viewDidLoad()
     {
@@ -64,8 +65,6 @@ class StreamViewController: UIViewController
     
     func fetchStreamKey()
     {
-        SVProgressHUD.showWithStatus("Loading key")
-        
         TwitchRequestManager.manager!.request(.GET, "https://api.twitch.tv/kraken/channel").responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
             if result.isSuccess {
                 var responseJSON = JSON(result.value!)
@@ -83,7 +82,6 @@ class StreamViewController: UIViewController
                 
                 self.streamKey = responseJSON["stream_key"].description
                 print("Stream key: \(self.streamKey)")
-                SVProgressHUD.dismiss()
                 self.startStream()
             }
             else {
@@ -114,10 +112,11 @@ class StreamViewController: UIViewController
     {
         if streamIsActive
         {
-            disconnectStream()
+            doDisconnect()
         }
         else
         {
+            SVProgressHUD.showWithStatus("Starting stream")
             if streamKey != nil { startStream() }
             else { fetchStreamKey() }
         }
@@ -140,7 +139,12 @@ class StreamViewController: UIViewController
         return .LightContent
     }
     
-    func disconnectStream()
+    func doDisconnect()
+    {
+        broadcastStreamClient?.disconnect()
+    }
+    
+    func setDisconnect()
     {
         broadcastStreamClient?.teardownPreviewLayer()
         broadcastStreamClient = nil
@@ -157,7 +161,7 @@ extension StreamViewController: MPIMediaStreamEvent
         switch state
         {
         case CONN_DISCONNECTED:
-            disconnectStream()
+            setDisconnect()
         case CONN_CONNECTED:
             if description != MP_RTMP_CLIENT_IS_CONNECTED { break }
             broadcastStreamClient?.start()
@@ -165,6 +169,8 @@ extension StreamViewController: MPIMediaStreamEvent
             break
             // TODO
         case STREAM_PLAYING:
+            attemptsDone = 0
+            SVProgressHUD.dismiss()
             streamIsActive = true
             broadcastStreamClient?.setPreviewLayer(previewView)
             self.navigationItem.rightBarButtonItem!.title = "Stop"
@@ -177,10 +183,21 @@ extension StreamViewController: MPIMediaStreamEvent
     {
         print("Connect failed: \(description)")
         if broadcastStreamClient == nil { return }
-        disconnectStream()
+        setDisconnect()
         
-        let errorAlertView = UIAlertView(title: "Error", message: "An error has occurred during the connection setup.", delegate: nil, cancelButtonTitle: "Close")
-        errorAlertView.show()
+        if code == -7 && attemptsDone < 5 // just retry...
+        {
+            attemptsDone++
+            startStream()
+        }
+        else
+        {
+            SVProgressHUD.dismiss()
+            let errorAlertView = UIAlertView(title: "Error", message: "An error has occurred during the connection setup.", delegate: nil, cancelButtonTitle: "Close")
+            errorAlertView.show()
+        }
+        
+        
     }
     
     func pixelBufferShouldBePublished(pixelBuffer: CVPixelBuffer!, timestamp: Int32)

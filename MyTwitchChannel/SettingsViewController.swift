@@ -99,7 +99,6 @@ class SettingsViewController: UITableViewController
             (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
             self.serversLoaded = true
             var responseJSON = JSON(result.value!)
-            print(responseJSON)
             for server in responseJSON["ingests"] { self.streamServers.append(server.1) }
         }
     }
