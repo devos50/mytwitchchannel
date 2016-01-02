@@ -11,13 +11,11 @@ import MMDrawerController
 import SVProgressHUD
 import Alamofire
 import SwiftyJSON
-import GoogleMobileAds
 
 class StreamViewController: UIViewController
 {
     @IBOutlet weak var previewView: UIView!
     @IBOutlet weak var fpsLabel: UILabel!
-    @IBOutlet weak var adView: GADBannerView!
     @IBOutlet weak var rightBarButton: UIBarButtonItem!
     private var resolution: MPVideoResolution?
     var broadcastStreamClient: BroadcastStreamClient?
@@ -43,17 +41,6 @@ class StreamViewController: UIViewController
         if chosenQuality == "low" { resolution = RESOLUTION_LOW }
         else if chosenQuality == "medium" { resolution = RESOLUTION_MEDIUM }
         else { resolution = RESOLUTION_VGA }
-        
-        // load ads if needed
-        if NSUserDefaults.standardUserDefaults().boolForKey("EnableAds")
-        {
-            adView.adUnitID = AD_ID
-            adView.rootViewController = self
-            let request = GADRequest()
-            request.testDevices = [ kGADSimulatorID, "69c340aefb538925732f68b596093eca" ]
-            adView.loadRequest(request)
-        }
-        else { adView.hidden = true }
         
         // check if you should select a server
         if NSUserDefaults.standardUserDefaults().stringForKey("StreamServerName") == nil

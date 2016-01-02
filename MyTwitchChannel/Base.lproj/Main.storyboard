@@ -8,7 +8,7 @@
         <!--Menu-->
         <scene sceneID="U8y-iA-vKN">
             <objects>
-                <tableViewController id="ybU-9p-KOE" customClass="MenuViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="ybU-9p-KOE" customClass="MenuViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="TXf-Ug-leX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -275,10 +275,10 @@
             </objects>
             <point key="canvasLocation" x="305" y="-378"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Ads Navigation Controller-->
         <scene sceneID="Pk2-de-dgO">
             <objects>
-                <navigationController storyboardIdentifier="StreamNavigationController" id="UzJ-eR-NaS" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="StreamNavigationController" id="UzJ-eR-NaS" customClass="AdsNavigationController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Ba-Pr-a9w">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -299,7 +299,8 @@
         <!--Settings-->
         <scene sceneID="WwQ-8Q-cKW">
             <objects>
-                <tableViewController id="zps-E3-9zR" customClass="SettingsViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XPy-tD-5Za" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="zps-E3-9zR" customClass="SettingsViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="VbX-FB-BKn">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -463,14 +464,13 @@
                         <outlet property="streamQualityLabel" destination="lGw-SS-Bs3" id="imu-Ii-fSb"/>
                     </connections>
                 </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="XPy-tD-5Za" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1124" y="1208"/>
         </scene>
         <!--Register-->
         <scene sceneID="efI-ih-KM1">
             <objects>
-                <viewController id="InT-is-fbw" customClass="ShowWebsiteViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="InT-is-fbw" customClass="ShowWebsiteViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Rfg-KU-1Rc"/>
                         <viewControllerLayoutGuide type="bottom" id="v4h-gR-JBK"/>
@@ -509,10 +509,10 @@
             </objects>
             <point key="canvasLocation" x="1124" y="1990"/>
         </scene>
-        <!--My Twitch Channel-->
+        <!--My Channel-->
         <scene sceneID="Mbi-2p-lak">
             <objects>
-                <tableViewController id="Ls5-7g-8ka" customClass="ChannelViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Ls5-7g-8ka" customClass="ChannelViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="Yl5-M1-AVd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -934,7 +934,7 @@
                             <outlet property="delegate" destination="Ls5-7g-8ka" id="yih-Ys-xZc"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="My Twitch Channel" id="0No-GT-k0L">
+                    <navigationItem key="navigationItem" title="My Channel" id="0No-GT-k0L">
                         <barButtonItem key="rightBarButtonItem" title="Item" systemItem="edit" id="QYQ-hF-wKc">
                             <connections>
                                 <action selector="editButtonPressed" destination="Ls5-7g-8ka" id="Tmj-Tv-8zx"/>
@@ -966,7 +966,7 @@
         <!--Videos-->
         <scene sceneID="foO-Su-C4Z">
             <objects>
-                <tableViewController id="NVi-k9-ohM" customClass="VideosViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="NVi-k9-ohM" customClass="VideosViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="290" sectionHeaderHeight="22" sectionFooterHeight="22" id="omU-4F-mgZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1129,10 +1129,10 @@
             </objects>
             <point key="canvasLocation" x="1124.5" y="3533.5"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Ads Navigation Controller-->
         <scene sceneID="jhu-g6-We9">
             <objects>
-                <navigationController storyboardIdentifier="VideosNavigationController" id="Nne-N9-DZk" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="VideosNavigationController" id="Nne-N9-DZk" customClass="AdsNavigationController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="arP-rx-ZDi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1153,7 +1153,7 @@
         <!--Account-->
         <scene sceneID="RCv-5T-Q1D">
             <objects>
-                <tableViewController id="7qc-yq-goc" customClass="AccountViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="7qc-yq-goc" customClass="AccountViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="uNb-2c-Bg0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1453,10 +1453,10 @@
             </objects>
             <point key="canvasLocation" x="1125.5" y="4335.5"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Ads Navigation Controller-->
         <scene sceneID="sQf-59-Zzq">
             <objects>
-                <navigationController storyboardIdentifier="ChatNavigationController" id="5gp-0o-J6h" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ChatNavigationController" id="5gp-0o-J6h" customClass="AdsNavigationController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="M3k-rh-9Lb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1477,7 +1477,7 @@
         <!--Chat-->
         <scene sceneID="Dra-dX-fR8">
             <objects>
-                <viewController id="Fcn-Bq-SVb" customClass="ChatViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Fcn-Bq-SVb" customClass="ChatViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="w0A-yh-l9x"/>
                         <viewControllerLayoutGuide type="bottom" id="hRQ-AC-6DJ"/>
@@ -1500,7 +1500,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tez-DE-0er">
                                                     <rect key="frame" x="8" y="3" width="359" height="18"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -1607,7 +1607,7 @@
         <!--Feedback-->
         <scene sceneID="aIG-5O-pkV">
             <objects>
-                <tableViewController id="6fJ-P2-4ZC" customClass="FeedbackViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="6fJ-P2-4ZC" customClass="FeedbackViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="Fpf-o4-GrT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1717,10 +1717,10 @@
             </objects>
             <point key="canvasLocation" x="1124.5" y="5910.5"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Ads Navigation Controller-->
         <scene sceneID="byJ-zd-h0G">
             <objects>
-                <navigationController storyboardIdentifier="FeedbackNavigationController" id="G6Y-3H-uaU" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="FeedbackNavigationController" id="G6Y-3H-uaU" customClass="AdsNavigationController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="f9Q-2c-AKd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1738,10 +1738,10 @@
             </objects>
             <point key="canvasLocation" x="305" y="5911"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Ads Navigation Controller-->
         <scene sceneID="O0Q-R5-hpx">
             <objects>
-                <navigationController storyboardIdentifier="AccountNavigationController" id="NBy-u6-yqT" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="AccountNavigationController" id="NBy-u6-yqT" customClass="AdsNavigationController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="iyh-hF-8vj">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1762,7 +1762,7 @@
         <!--Subscribers-->
         <scene sceneID="dHB-X6-dg6">
             <objects>
-                <tableViewController id="vcl-vf-Is1" customClass="SubscriptionsViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="vcl-vf-Is1" customClass="SubscriptionsViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="9TV-EA-spt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1836,10 +1836,10 @@
             </objects>
             <point key="canvasLocation" x="1810" y="2380"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Ads Navigation Controller-->
         <scene sceneID="hix-rr-L2H">
             <objects>
-                <navigationController storyboardIdentifier="ChannelNavigationController" id="x5T-6s-had" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ChannelNavigationController" id="x5T-6s-had" customClass="AdsNavigationController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="xHr-Kr-IL5">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1857,10 +1857,10 @@
             </objects>
             <point key="canvasLocation" x="305" y="2728"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Ads Navigation Controller-->
         <scene sceneID="Zti-ao-43r">
             <objects>
-                <navigationController storyboardIdentifier="ShowWebsiteNavigationController" id="ek3-Hz-dgl" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ShowWebsiteNavigationController" id="ek3-Hz-dgl" customClass="AdsNavigationController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ouL-nD-V31">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1878,10 +1878,10 @@
             </objects>
             <point key="canvasLocation" x="305" y="1990"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Ads Navigation Controller-->
         <scene sceneID="tMQ-KZ-vKd">
             <objects>
-                <navigationController storyboardIdentifier="SettingsNavigationController" id="obz-vx-KAy" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SettingsNavigationController" id="obz-vx-KAy" customClass="AdsNavigationController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="KoV-cu-chc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -1902,7 +1902,7 @@
         <!--Stream-->
         <scene sceneID="vSg-aH-a35">
             <objects>
-                <viewController id="ZAq-8x-vnv" customClass="StreamViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZAq-8x-vnv" customClass="StreamViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="H3w-Tw-7W4"/>
                         <viewControllerLayoutGuide type="bottom" id="IPB-da-Cos"/>
@@ -1939,13 +1939,6 @@
                                     <action selector="changeCamera" destination="ZAq-8x-vnv" eventType="touchUpInside" id="JdB-Wm-y3K"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3MK-UY-KuT" customClass="GADBannerView">
-                                <rect key="frame" x="0.0" y="518" width="320" height="50"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="dhG-PJ-u17"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.96695106907894746" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -1954,11 +1947,8 @@
                             <constraint firstItem="TMY-0c-fJf" firstAttribute="leading" secondItem="NkP-Jp-x76" secondAttribute="leading" id="CND-GR-Bwa"/>
                             <constraint firstAttribute="trailing" secondItem="TMY-0c-fJf" secondAttribute="trailing" id="Cbj-tu-UTC"/>
                             <constraint firstItem="KA0-SQ-iho" firstAttribute="top" secondItem="TMY-0c-fJf" secondAttribute="bottom" constant="8" id="Do3-0E-LC3"/>
-                            <constraint firstItem="3MK-UY-KuT" firstAttribute="leading" secondItem="NkP-Jp-x76" secondAttribute="leading" id="LZU-PL-oIQ"/>
-                            <constraint firstItem="IPB-da-Cos" firstAttribute="top" secondItem="3MK-UY-KuT" secondAttribute="bottom" id="T5v-QH-1hX"/>
                             <constraint firstAttribute="trailing" secondItem="Idv-AU-ia6" secondAttribute="trailing" constant="120" id="Urd-Kz-se3"/>
                             <constraint firstAttribute="trailing" secondItem="KA0-SQ-iho" secondAttribute="trailing" constant="8" id="Vuy-lo-5Pa"/>
-                            <constraint firstAttribute="trailing" secondItem="3MK-UY-KuT" secondAttribute="trailing" id="Za2-Qd-u0P"/>
                             <constraint firstItem="TMY-0c-fJf" firstAttribute="top" secondItem="H3w-Tw-7W4" secondAttribute="bottom" id="gtX-JH-PHh"/>
                         </constraints>
                     </view>
@@ -1971,7 +1961,6 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="adView" destination="3MK-UY-KuT" id="phU-rT-Ewa"/>
                         <outlet property="fpsLabel" destination="Idv-AU-ia6" id="sXq-hB-KBd"/>
                         <outlet property="previewView" destination="TMY-0c-fJf" id="nao-5R-MaB"/>
                         <outlet property="rightBarButton" destination="6js-Uz-9qq" id="ysB-C5-YXq"/>
@@ -1984,7 +1973,7 @@
         <!--Followers-->
         <scene sceneID="xNl-HB-TaU">
             <objects>
-                <tableViewController id="RfV-qK-HGU" customClass="FollowersViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="RfV-qK-HGU" customClass="FollowersViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="54" sectionHeaderHeight="22" sectionFooterHeight="22" id="2JW-hl-afV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2061,7 +2050,7 @@
         <!--Following-->
         <scene sceneID="QTL-fW-EV7">
             <objects>
-                <tableViewController id="ZIV-pT-BT3" customClass="FollowingViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="ZIV-pT-BT3" customClass="FollowingViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="54" sectionHeaderHeight="22" sectionFooterHeight="22" id="mX5-ef-Bwq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2149,7 +2138,7 @@
         <!--Blocked Users-->
         <scene sceneID="4YV-Xi-hJU">
             <objects>
-                <tableViewController id="qiU-vO-zCF" customClass="BlockedUsersViewController" customModule="MyTwitchChannel" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="qiU-vO-zCF" customClass="BlockedUsersViewController" customModule="Mobile_Streaming" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="54" sectionHeaderHeight="22" sectionFooterHeight="22" id="5ss-RV-vci">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

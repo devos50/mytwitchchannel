@@ -97,6 +97,7 @@ class ChatViewController: UIViewController
         }
         else
         {
+            chatMessageTextField.resignFirstResponder()
             chatManager.leaveCurrentChannel()
             isInChannel = false
             updateUI()
@@ -105,6 +106,7 @@ class ChatViewController: UIViewController
     
     func keyboardWillShow(notification: NSNotification)
     {
+        self.navigationController?.setToolbarHidden(true, animated: false)
         var info = notification.userInfo!
         let keyboardFrame: CGRect = (info[UIKeyboardFrameEndUserInfoKey]as! NSValue).CGRectValue()
         self.bottomMargin.constant = CGRectGetHeight(keyboardFrame)
@@ -113,6 +115,10 @@ class ChatViewController: UIViewController
     
     func keyboardWillHide(notification: NSNotification)
     {
+        if NSUserDefaults.standardUserDefaults().boolForKey("EnableAds")
+        {
+            self.navigationController?.setToolbarHidden(false, animated: false)
+        }
         self.bottomMargin.constant = 0
         tableView.removeGestureRecognizer(tableViewTapRecognizer!)
     }
@@ -152,7 +158,7 @@ extension ChatViewController: UITableViewDataSource, UITableViewDelegate
         
         if chatMessage.type == .Join
         {
-            let attributedString = NSMutableAttributedString(string: "You have joined the chat room.")
+            let attributedString = NSMutableAttributedString(string: "You have joined \(chatManager.currentChannel)'s chat.")
             attributedString.beginEditing()
             attributedString.addAttribute(NSForegroundColorAttributeName, value: UIColor.grayColor(), range: NSMakeRange(0, attributedString.string.characters.count))
             attributedString.endEditing()

@@ -166,10 +166,11 @@ class ChannelViewController: UITableViewController
         TwitchRequestManager.manager!.request(.PUT, "https://api.twitch.tv/kraken/channels/" + channelName!, parameters: ["channel" : ["status" : newTitle]], encoding: ParameterEncoding.URL).responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
             if result.isSuccess {
                 self.streamTitleLabel.text = newTitle
+                SVProgressHUD.dismiss()
             } else {
                 let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
                 errorAlertView.show()
-
+                SVProgressHUD.dismiss()
             }
         }
     }
@@ -178,14 +179,15 @@ class ChannelViewController: UITableViewController
     {
         SVProgressHUD.showWithStatus("Saving")
         
-        
         TwitchRequestManager.manager!.request(.PUT, "https://api.twitch.tv/kraken/channels/" + channelName!, parameters: ["channel" : ["game" : newGame]], encoding: ParameterEncoding.URL).responseJSON { (request: NSURLRequest?, response: NSHTTPURLResponse?, result: Result<AnyObject>) in
             if result.isSuccess {
-                self.streamGameLabel.text = newGame
+                self.streamGameLabel.text = "Playing \(newGame)"
+                SVProgressHUD.dismiss()
             } else
             {
                 let errorAlertView = UIAlertView(title: "Error", message: "An unknown error has occurred. Please try again.", delegate: nil, cancelButtonTitle: "Close")
                 errorAlertView.show()
+                SVProgressHUD.dismiss()
             }
         }
     }

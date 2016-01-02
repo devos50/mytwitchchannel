@@ -12,6 +12,7 @@ import SwiftyJSON
 import MMDrawerController
 import Alamofire
 import ActionSheetPicker_3_0
+import GoogleMobileAds
 
 class SettingsViewController: UITableViewController
 {

@@ -21,7 +21,7 @@ class IRCManager
     private var connected = false
     private var socket: GCDAsyncSocket?
     var delegate: IRCManagerDelegate?
-    private var currentChannel = ""
+    var currentChannel = ""
     private var username = ""
     
     init()

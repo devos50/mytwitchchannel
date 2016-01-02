@@ -11,8 +11,10 @@ import MMDrawerController
 import SVProgressHUD
 import Fabric
 import Crashlytics
+import GoogleMobileAds
 
 let AD_ID = "ca-app-pub-7225770687990392/7394127466"
+let gadTestDevices = [ kGADSimulatorID, "69c340aefb538925732f68b596093eca" ]
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
