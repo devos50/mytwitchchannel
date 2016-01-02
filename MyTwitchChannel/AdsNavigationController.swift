@@ -15,6 +15,11 @@ class AdsNavigationController: UINavigationController
     {
         super.viewDidLoad()
         
+        loadAdsIfNeeded()
+    }
+    
+    func loadAdsIfNeeded()
+    {
         if NSUserDefaults.standardUserDefaults().boolForKey("EnableAds")
         {
             self.setToolbarHidden(false, animated: false)
@@ -27,5 +32,6 @@ class AdsNavigationController: UINavigationController
             request.testDevices = gadTestDevices
             adView.loadRequest(request)
         }
+        else { self.setToolbarHidden(true, animated: false) }
     }
 }

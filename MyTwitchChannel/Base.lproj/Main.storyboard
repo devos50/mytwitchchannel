@@ -448,6 +448,44 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection headerTitle="Ads" footerTitle="Keeping ads enabled helps us to pay the bills :)" id="BvI-VT-uGy">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="U57-jl-5mA">
+                                        <rect key="frame" x="0.0" y="481.5" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U57-jl-5mA" id="gnK-dx-xxO">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Ads" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78M-8H-WVE">
+                                                    <rect key="frame" x="15" y="0.0" width="245" height="43"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wUY-DJ-aoc">
+                                                    <rect key="frame" x="263" y="6" width="51" height="31"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="31" id="F13-nr-cTI"/>
+                                                        <constraint firstAttribute="width" constant="49" id="Vll-6N-Cbe"/>
+                                                    </constraints>
+                                                    <connections>
+                                                        <action selector="switchValueChanged:" destination="zps-E3-9zR" eventType="valueChanged" id="8hf-6r-uVW"/>
+                                                    </connections>
+                                                </switch>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="78M-8H-WVE" secondAttribute="trailing" constant="60" id="McC-IB-VKk"/>
+                                                <constraint firstItem="wUY-DJ-aoc" firstAttribute="top" secondItem="gnK-dx-xxO" secondAttribute="top" constant="6" id="bXy-El-xsT"/>
+                                                <constraint firstItem="78M-8H-WVE" firstAttribute="top" secondItem="gnK-dx-xxO" secondAttribute="top" id="eSn-jY-fdS"/>
+                                                <constraint firstAttribute="trailing" secondItem="wUY-DJ-aoc" secondAttribute="trailing" constant="8" id="tAS-Ws-iXE"/>
+                                                <constraint firstAttribute="bottom" secondItem="78M-8H-WVE" secondAttribute="bottom" constant="0.5" id="xQ3-bP-c8P"/>
+                                                <constraint firstItem="78M-8H-WVE" firstAttribute="leading" secondItem="gnK-dx-xxO" secondAttribute="leading" constant="15" id="yqJ-fx-jbc"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="zps-E3-9zR" id="uT1-xt-gIK"/>
@@ -458,6 +496,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="accountNameLabel" destination="eqS-Oi-du4" id="PwT-MS-lcO"/>
+                        <outlet property="adsSwitch" destination="wUY-DJ-aoc" id="zCC-Qk-VFO"/>
                         <outlet property="loginLogoutLabel" destination="XQ5-z3-CYq" id="yXk-A1-4Hz"/>
                         <outlet property="serverLabel" destination="1UN-HJ-iv7" id="Z9s-5v-kI1"/>
                         <outlet property="streamOrientationLabel" destination="1FB-tK-dcG" id="xMI-AA-ECY"/>

@@ -21,6 +21,7 @@ class SettingsViewController: UITableViewController
     @IBOutlet weak var streamQualityLabel: UILabel!
     @IBOutlet weak var streamOrientationLabel: UILabel!
     @IBOutlet weak var serverLabel: UILabel!
+    @IBOutlet weak var adsSwitch: UISwitch!
     private var logoutAlertView: UIAlertView?
     private var streamServers = [JSON]()
     private var streamQualityPicker: ActionSheetStringPicker?
@@ -51,8 +52,17 @@ class SettingsViewController: UITableViewController
         if chosenServer == nil { serverLabel.text = "-" }
         else { serverLabel.text = chosenServer }
         
+        adsSwitch.on = NSUserDefaults.standardUserDefaults().boolForKey("EnableAds")
+        
         loadStreamServers()
         reloadSettings()
+    }
+    
+    @IBAction func switchValueChanged(sender: UISwitch)
+    {
+        NSUserDefaults.standardUserDefaults().setBool(sender.on, forKey: "EnableAds")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        (self.navigationController as? AdsNavigationController)?.loadAdsIfNeeded()
     }
     
     func leftBarButtonPressed(b: UIBarButtonItem)
